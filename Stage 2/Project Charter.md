@@ -101,13 +101,6 @@ This section identifies the potential risks that may arise during the developmen
 # 👥 High-Level Plan
 ---
 
-# 📅 High-Level Project Plan
-
-**Project:** Healthy Meals Subscription Platform  
-**Team:** Moudhi Almutlaq · Badryah Almalki · Reem Alshehri · Yara Ibrahim
-
----
-
 | Week | Stage | Main Tasks | Key Milestones | Deliverables |
 |------|-------|-----------|----------------|--------------|
 | Week 1 | Idea Development | Define the project idea, problem, solution, and target users | Project idea approved | Idea description, problem, solution |

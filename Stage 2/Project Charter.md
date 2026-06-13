@@ -99,15 +99,26 @@ This section identifies the potential risks that may arise during the developmen
 | Real data or restaurant collaboration may not be achieved | Use mock data for restaurants and meals if no restaurant agreed to collaborate or provide their own data. |
 
 # 👥 High-Level Plan
+---
+
+# 📅 High-Level Project Plan
+
+**Project:** Healthy Meals Subscription Platform  
+**Team:** Moudhi Almutlaq · Badryah Almalki · Reem Alshehri · Yara Ibrahim
+
+---
 
 | Week | Stage | Main Tasks | Key Milestones | Deliverables |
-|---|---|---|---|---|
-| 1 | Idea Development | Define the project idea, problem, solution, and target users | Project idea approved | Idea description, problem, solution |
-| 2 | Project Charter Development | Define project objectives, MVP scope, team roles, and constraints | Project charter approved | Simple Project Charter |
-| 3 | Requirements Analysis | Define website pages, user journey, and main features | Project requirements approved | Requirements list and User Flow |
-| 4 | Technical Documentation | Define database structure, API plan, and basic page wireframes | Technical design approved | Simple ERD, API Plan, Wireframes |
-| 5 - 6 | Backend Development | Create database, users, restaurants, meals, and orders | Core backend completed | Database and basic APIs |
-| 7 - 8 | Frontend Development | Build register, login, restaurants, and meals pages | Main user pages completed | Initial user interface |
-| 9 | Order Flow and Restaurant Dashboard | Build weekly meal selection, order summary, and restaurant meal management | Order flow completed | Order Flow and simple Restaurant Dashboard |
-|10-11 |  Testing and Improvement | Test the platform, identify bugs, fix issues, and improve UI | Stable MVP version | Tested and improved MVP |
-| 12 | Project Closure and Final Delivery | Prepare README, final presentation, demo, and GitHub repository | Final submission ready | README, Presentation, Demo |
+|------|-------|-----------|----------------|--------------|
+| Week 1 | Idea Development | Define the project idea, problem, solution, and target users | Project idea approved | Idea description, problem, solution |
+| Week 2 | Project Charter Development | Define project objectives, MVP scope, team roles, and constraints | Project charter approved | Simple Project Charter |
+| Week 3 | Requirements Analysis | Define website pages, user journey, and main features | Project requirements approved | Requirements list and User Flow |
+| Week 4 | Technical Documentation | Define database structure, API plan, and basic page wireframes | Technical design approved | Simple ERD, API Plan, Wireframes |
+| Week 5 | Backend Development — Part 1 | Create database, users, restaurants, meals, and implement register and login APIs | Database and authentication ready | Database and basic APIs |
+| Week 6 | Backend Development — Part 2 | Build subscription and order APIs, meal selection logic, delivery address, and admin APIs | Core backend completed | Full backend APIs tested and ready |
+| Week 7 | Frontend Development | Build register, login, restaurants, and meals pages | Main user pages completed | Initial user interface |
+| Week 8 | Order Flow and Restaurant Dashboard | Build weekly meal selection, order summary, and restaurant meal management | Order flow completed | Order Flow and simple Restaurant Dashboard |
+| Week 9 | Testing — Part 1 | Test the platform end-to-end, identify and document all bugs | No critical bugs remaining | Test cases and bug report |
+| Week 10 | Testing and Improvement — Part 2 | Fix all bugs, improve UI and performance, final testing round | Stable MVP version | Tested and improved MVP |
+| Week 11 | Project Closure — Part 1 | Clean up code, write documentation, prepare GitHub repository and README | Repository ready | Clean GitHub repository and README |
+| Week 12 | Project Closure — Part 2 | Prepare final presentation, demo, and submit all deliverables | Final submission ready | README, Presentation, Demo | submitted. | ⏳ Upcoming |

@@ -18,19 +18,19 @@
 
 ---
 
-## 0. User Stories and Mockups
+## User Stories
 
-User stories were prioritized using the MoSCoW method across all three user types: Customer, Restaurant, and Admin. Mockups for the main screens were created using Google Stitch and exported to Figma.
+Prioritized using MoSCoW method (Must Have, Should Have, Could Have, Won't Have).
 
-### 0.1 Customer
+### Customer
 
 | Priority | User Story |
-|---|---|
+|----------|-----------|
 | Must Have | As a customer, I want to create an account by entering my personal and health-related information, so that the platform can save my profile and subscription details. |
 | Must Have | As a customer, I want to view available healthy meals from different restaurants, so that I can choose meals based on my preferences. |
 | Must Have | As a customer, I want to select one lunch meal for each day of the subscription week, so that I can prepare my weekly meal plan in advance. |
 | Must Have | As a customer, I want to review my selected meals before submitting the order, so that I can confirm my weekly choices. |
-| Must Have | As a customer, I want to submit my weekly meal order and pay, so that my subscription is confirmed and the restaurant can prepare my meals. |
+| Must Have | As a customer, I want to submit my weekly meal order and pay to confirm my order. |
 | Must Have | As a customer, I want to complete payment for my subscription, so that my order is confirmed. |
 | Should Have | As a customer, I want to add my preferred delivery time and address, so that the restaurant can prepare the delivery properly. |
 | Should Have | As a customer, I want to apply a discount code, so that I can pay using a company discount. |
@@ -38,10 +38,11 @@ User stories were prioritized using the MoSCoW method across all three user type
 | Could Have | As a customer, I want to leave a review after my subscription week ends, so that I can share my experience with other users. |
 | Could Have | As a customer, I want to view meal or restaurant ratings, so that I can make better choices. |
 
-### 0.2 Restaurant
+### Restaurant Owner
 
 | Priority | User Story |
-|---|---|
+|----------|-----------|
+| Must Have | As a restaurant owner, I want to create a restaurant account with my business details, so that I can start managing my menu on the platform. |
 | Must Have | As a restaurant owner, I want to log in to my restaurant account, so that I can manage my restaurant meals. |
 | Must Have | As a restaurant owner, I want to add new meals with image, name, ingredients, calories, and macronutrients, so that customers can view complete meal details. |
 | Must Have | As a restaurant owner, I want to update meal information, so that I can keep the weekly menu accurate. |
@@ -49,20 +50,43 @@ User stories were prioritized using the MoSCoW method across all three user type
 | Must Have | As a restaurant owner, I want to view customer meal selections, so that I can prepare weekly orders in advance. |
 | Should Have | As a restaurant owner, I want to see orders grouped by day, so that meal preparation becomes easier. |
 
-### 0.3 Admin
+### Admin
 
 | Priority | User Story |
-|---|---|
+|----------|-----------|
 | Must Have | As an admin, I want to review restaurant registration information, so that I can ensure only eligible restaurants join the platform. |
 | Must Have | As an admin, I want to manage restaurant accounts, so that I can approve or reject restaurants. |
 | Should Have | As an admin, I want to view basic platform data, so that I can monitor restaurants, customers, and orders. |
 
-### 0.4 Mockups
+---
+
+## Mockups
 
 Mockups for all main screens were created using Google Stitch and exported to Figma.
 
-**Figma link:** [View All Mockups on Figma](https://www.figma.com/design/eZ6CPzYEFMObYFsVxw9SGg/Untitled?node-id=0-1&t=5Aa4UiFYLHYaWs78-1)
+### Customer Screens
+1. Register Page
+2. Login Page
+3. Meal Plans — Browse Restaurants and Meals
+4. Weekly Meal Selection
+5. Order Summary
+6. Payment Page
+7. Customer Dashboard
 
+### Restaurant Owner Screens
+8. Restaurant Login Page
+9. Restaurant Register Page
+10. My Meals Dashboard
+11. Add New Meal
+12. Edit / Delete Meal
+13. Orders by Day
+
+### Admin Screens
+14. Admin Login Page
+15. Pending Restaurants — Approve / Reject
+16. Admin Overview Dashboard
+
+> [View All Mockups on Figma](https://www.figma.com/design/eZ6CPzYEFMObYFsVxw9SGg/Untitled?node-id=0-1&t=5Aa4UiFYLHYaWs78-1)
 ---
 
 ## 1. System Architecture

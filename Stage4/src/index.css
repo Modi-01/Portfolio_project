@@ -1,0 +1,124 @@
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #ffffff;
+  --border: #e5e4e7;
+  --code-bg: #f4f3ec;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow: rgba(0,0,0,0.1) 0 10px 15px -3px, rgba(0,0,0,0.05) 0 4px 6px -2px;
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+  font: 16px/150% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light;
+  color: var(--text);
+  background: #fafaf4;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fafaf4;min-height:100vh}
+#root{width:1280px;max-width:100%;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;box-sizing:border-box}
+h1,h2{font-family:var(--heading);font-weight:500;color:var(--text-h)}
+h1{font-size:56px;letter-spacing:-1.68px;margin:32px 0}
+h2{font-size:24px;line-height:118%;letter-spacing:-0.24px;margin:0 0 8px}
+p{margin:0}
+code,.counter{font-family:var(--mono);display:inline-flex;border-radius:4px;color:var(--text-h)}
+code{font-size:15px;line-height:135%;padding:4px 8px;background:var(--code-bg)}
+
+@media (max-width:1024px){h1{font-size:36px;margin:20px 0}h2{font-size:20px}}
+
+.meal-plans{padding:100px 120px 80px;background:#fafaf4;width:100%}
+.meal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:48px}
+.meal-title{text-align:left}
+.meal-title h2{font-size:36px;font-weight:700;color:#1E1E1E;margin-bottom:12px;letter-spacing:-0.5px}
+.meal-title p{width:500px;font-size:16px;line-height:1.7;color:#6B7280;text-align:left}
+.meal-toggle{display:flex;background:#ECEAE2;border-radius:999px;padding:4px;gap:6px}
+.meal-toggle button{border:none;background:transparent;padding:10px 22px;border-radius:999px;cursor:pointer;font-size:14px;font-weight:600;color:#666;transition:0.3s}
+.meal-toggle .active{background:#2F5D3A;color:#fff}
+.meal-wrapper{display:flex;gap:40px;align-items:flex-start}
+.meal-grid{display:flex;gap:30px;flex-wrap:wrap;flex:1}
+.meal-card{width:320px;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,0.08);transition:0.3s;display:flex;flex-direction:column;flex:1 1 280px}
+.meal-card:hover{transform:translateY(-6px)}
+.meal-image{width:100%;height:220px;object-fit:cover}
+.meal-content{padding:20px;flex:1;display:flex;flex-direction:column;text-align:left}
+.meal-tags{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.meal-tags span{background:#EAF6EA;color:#2F5D3A;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.meal-content h3{font-size:24px;font-weight:700;margin-bottom:12px;color:#1E1E1E}
+.meal-content p{font-size:15px;line-height:1.7;color:#666;margin-bottom:24px;flex:1}
+.meal-footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.price{font-size:20px;font-weight:700;color:#2F5D3A}
+.price small{font-size:13px;color:#888;margin-left:3px}
+.select-btn{border:none;background:transparent;color:#2F5D3A;font-size:15px;font-weight:600;cursor:pointer;transition:0.3s}
+.select-btn:hover{transform:translateX(4px)}
+.subscription-panel{flex:0 0 240px;min-width:200px}
+.subscription-box{background:#F3F7FC;padding:24px 20px;border-radius:28px;border:1px solid #DCE4EC;text-align:left}
+.subscription-box h4{font-size:18px;font-weight:600;color:#1E1E1E;margin-bottom:16px}
+.toggle-group{display:flex;gap:10px;margin-bottom:16px}
+.toggle-option{background:#fff;padding:8px 18px;border-radius:40px;border:2px solid #D0D9E3;font-weight:600;font-size:14px;cursor:pointer;transition:0.3s;color:#1E1E1E}
+.toggle-option.active{border-color:#2F5D3A;background:#E8F5E9;color:#2F5D3A}
+.toggle-option:hover{border-color:#2F5D3A}
+.subscription-badge{background:#2F5D3A;color:#fff;padding:6px 14px;border-radius:30px;font-size:13px;font-weight:500;display:inline-block;margin-bottom:12px}
+.subscription-note{font-size:13px;color:#6B7280;margin:0}
+
+.community-section{background:#fafaf4;padding:80px 120px;border-top:1px solid #E6ECF3;border-bottom:1px solid #E6ECF3;width:100%}
+.community-content{max-width:1280px;margin:0 auto}
+.community-section h2{font-size:36px;font-weight:700;color:#1E1E1E;margin-bottom:48px;text-align:center;letter-spacing:-0.5px}
+.testimonial{max-width:800px;margin:0 auto;text-align:center}
+.testimonial p{font-size:18px;line-height:1.8;color:#374151;margin-bottom:24px;font-style:italic}
+.testimonial-author{display:flex;flex-direction:column;gap:4px}
+.testimonial-author strong{font-size:16px;font-weight:700;color:#1E1E1E}
+.testimonial-author span{font-size:14px;color:#6B7280}
+
+.faq-section{background:#fafaf4;padding:80px 120px 100px;width:100%}
+.faq-content{max-width:1280px;margin:0 auto}
+.faq-section h2{font-size:36px;font-weight:700;color:#1E1E1E;margin-bottom:48px;text-align:center;letter-spacing:-0.5px}
+.faq-list{max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.faq-item{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;background:#fff;border-radius:16px;border:1px solid #E6ECF3;cursor:pointer;transition:0.3s;text-align:left}
+.faq-item:hover{border-color:#2F5D3A;box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+.faq-item span:first-child{font-size:16px;font-weight:500;color:#1E1E1E}
+.faq-icon{font-size:24px;color:#2F5D3A;font-weight:300}
+
+@media (max-width:1024px){
+  .meal-plans,.community-section,.faq-section{padding:80px 40px}
+  .faq-section{padding:60px 40px 80px}
+  .meal-header{flex-direction:column;gap:30px;align-items:stretch}
+  .meal-title,.meal-title p{text-align:center}
+  .meal-title p{width:100%}
+  .meal-toggle{justify-content:center}
+  .meal-wrapper{flex-direction:column}
+  .subscription-panel{flex:1;width:100%}
+  .subscription-box{max-width:400px;margin:0 auto}
+  .meal-grid{justify-content:center}
+  .community-section h2,.faq-section h2{font-size:30px}
+}
+
+@media (max-width:768px){
+  .meal-plans{padding:60px 20px}
+  .community-section{padding:40px 20px}
+  .faq-section{padding:40px 20px 60px}
+  .meal-card{width:100%;max-width:360px}
+  .meal-toggle{width:100%;justify-content:center;flex-wrap:wrap}
+  .meal-toggle button{flex:1;text-align:center;min-width:80px}
+  .testimonial p{font-size:16px}
+  .faq-item{padding:16px 20px}
+  .faq-item span:first-child{font-size:14px}
+  .subscription-box{padding:20px 16px}
+  .toggle-group{flex-direction:row;justify-content:center}
+  .toggle-option{flex:1;text-align:center}
+}
+
+@media (max-width:480px){
+  .meal-title h2{font-size:28px}
+  .community-section h2,.faq-section h2{font-size:24px}
+  .meal-content h3{font-size:20px}
+  .price{font-size:18px}
+  .select-btn{font-size:14px}
+}

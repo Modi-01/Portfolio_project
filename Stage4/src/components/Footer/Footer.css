@@ -1,0 +1,167 @@
+.footer {
+  width: 100%;
+  background: #2D2F2B;
+  color: #ffffff;
+
+  padding: 64px 120px 32px;
+
+  box-sizing: border-box;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 80px;
+
+  padding-bottom: 48px;
+
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-column:first-child {
+  width: 280px;
+}
+
+.footer-column h3 {
+  font-size: 40px;
+  font-weight: 700;
+  color: #C7F4C2;
+
+  margin-bottom: 28px;
+}
+
+.footer-column h4 {
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #C7F4C2;
+
+  margin-bottom: 28px;
+}
+
+.footer-column p {
+  color: rgba(255,255,255,.75);
+
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.footer-column a {
+  color: rgba(255,255,255,.75);
+
+  text-decoration: none;
+
+  margin-bottom: 18px;
+
+  transition: .3s;
+}
+
+.footer-column a:hover {
+  color: #C7F4C2;
+}
+
+.social-icons {
+  display: flex;
+  gap: 18px;
+}
+
+.social-icons a {
+  width: 48px;
+  height: 48px;
+
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #ffffff;
+}
+
+.social-icons a:hover {
+  background: #3D6F49;
+}
+
+.newsletter {
+  width: 300px;
+  height: 56px;
+
+  background: #383A36;
+
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 8px;
+}
+
+.newsletter input {
+  flex: 1;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  padding-left: 16px;
+
+  font-size: 16px;
+}
+
+.newsletter input::placeholder {
+  color: rgba(255,255,255,.5);
+}
+
+.newsletter button {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #C7F4C2;
+  color: #2D2F2B;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.footer-bottom {
+  padding-top: 28px;
+
+  color: rgba(255,255,255,.55);
+
+  font-size: 15px;
+
+  text-align: left;
+}
+
+@media (max-width: 992px) {
+
+  .footer {
+    padding: 60px 32px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .newsletter {
+    width: 100%;
+  }
+
+}

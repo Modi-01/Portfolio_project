@@ -1,4 +1,5 @@
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -14,11 +15,13 @@ function Navbar() {
       </ul>
 
       <div className="nav-right">
-        <a href="#" className="login">Login</a>
+        <Link to="/login" className="login">Login</Link>
 
-        <button className="signup-btn">
-          Sign Up
-        </button>
+        <Link to="/register">
+          <button className="signup-btn">
+            Sign Up
+          </button>
+        </Link>
       </div>
     </nav>
   );

@@ -5,14 +5,13 @@ function Register() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    password: "",
     age: "",
     gender: "",
     height: "",
     weight: "",
     healthGoal: "",
-    homeAddress: "",
-    workAddress: "",
-    password: "",
+    address: "",
   });
 
   const handleChange = (e) => {
@@ -26,7 +25,6 @@ function Register() {
 
   return (
     <>
-      {/* Google Fonts */}
       <link
         href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
         rel="stylesheet"
@@ -85,10 +83,9 @@ function Register() {
       `}</style>
 
       <div className="qp-body">
-        {/* Navbar */}
         <nav className="qp-nav">
           <div className="qp-nav-inner">
-            <div className="qp-logo">Quiet Premium</div>
+            <div className="qp-logo">Qooti</div>
             <div className="qp-nav-links">
               <a href="#">Meal Plans</a>
               <a href="#">Pricing</a>
@@ -96,19 +93,17 @@ function Register() {
               <a href="#">About</a>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              <button className="qp-btn-outline">Log In</button>
-              <button className="qp-btn-primary">Sign Up</button>
+              <Link to="/login"><button className="qp-btn-outline">Log In</button></Link>
+              <Link to="/register"><button className="qp-btn-primary">Sign Up</button></Link>
             </div>
           </div>
         </nav>
 
-        {/* Main */}
         <main className="qp-main">
           <div className="qp-bg-blob1" />
           <div className="qp-bg-blob2" />
 
           <div className="qp-grid">
-            {/* Left: Hero */}
             <div className="qp-hero">
               <div>
                 <h1 className="qp-headline">
@@ -116,7 +111,7 @@ function Register() {
                   <span>effortless</span> health.
                 </h1>
                 <p className="qp-subtext" style={{ marginTop: "16px" }}>
-                  Join Quiet Premium today and get personalized nutrition plans
+                  Join Qooti today and get personalized nutrition plans
                   crafted by science and perfected by chefs.
                 </p>
               </div>
@@ -132,7 +127,6 @@ function Register() {
               </div>
             </div>
 
-            {/* Right: Form */}
             <div className="qp-card">
               <h2 className="qp-card-title">Create Account</h2>
               <p className="qp-card-sub">
@@ -142,65 +136,27 @@ function Register() {
               <form className="qp-form" onSubmit={handleSubmit}>
                 <div className="qp-field">
                   <label className="qp-label">Full Name</label>
-                  <input
-                    className="qp-input"
-                    type="text"
-                    name="fullName"
-                    placeholder="John Doe"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    required
-                  />
+                  <input className="qp-input" type="text" name="fullName" placeholder="John Doe" value={formData.fullName} onChange={handleChange} required />
                 </div>
 
                 <div className="qp-field">
                   <label className="qp-label">Email Address</label>
-                  <input
-                    className="qp-input"
-                    type="email"
-                    name="email"
-                    placeholder="name@example.com"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
+                  <input className="qp-input" type="email" name="email" placeholder="name@example.com" value={formData.email} onChange={handleChange} required />
                 </div>
 
                 <div className="qp-field">
                   <label className="qp-label">Password</label>
-                  <input
-                    className="qp-input"
-                    type="password"
-                    name="password"
-                    placeholder="••••••••"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                  />
+                  <input className="qp-input" type="password" name="password" placeholder="••••••••" value={formData.password} onChange={handleChange} required />
                 </div>
 
                 <div className="qp-grid2">
                   <div className="qp-field">
                     <label className="qp-label">Age</label>
-                    <input
-                      className="qp-input"
-                      type="number"
-                      name="age"
-                      placeholder="25"
-                      value={formData.age}
-                      onChange={handleChange}
-                      required
-                    />
+                    <input className="qp-input" type="number" name="age" placeholder="25" value={formData.age} onChange={handleChange} required />
                   </div>
                   <div className="qp-field">
                     <label className="qp-label">Gender</label>
-                    <select
-                      className="qp-select"
-                      name="gender"
-                      value={formData.gender}
-                      onChange={handleChange}
-                      required
-                    >
+                    <select className="qp-select" name="gender" value={formData.gender} onChange={handleChange} required>
                       <option value="">Select</option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
@@ -211,39 +167,17 @@ function Register() {
                 <div className="qp-grid2">
                   <div className="qp-field">
                     <label className="qp-label">Height (cm)</label>
-                    <input
-                      className="qp-input"
-                      type="number"
-                      name="height"
-                      placeholder="170"
-                      value={formData.height}
-                      onChange={handleChange}
-                      required
-                    />
+                    <input className="qp-input" type="number" name="height" placeholder="170" value={formData.height} onChange={handleChange} required />
                   </div>
                   <div className="qp-field">
                     <label className="qp-label">Weight (kg)</label>
-                    <input
-                      className="qp-input"
-                      type="number"
-                      name="weight"
-                      placeholder="65"
-                      value={formData.weight}
-                      onChange={handleChange}
-                      required
-                    />
+                    <input className="qp-input" type="number" name="weight" placeholder="65" value={formData.weight} onChange={handleChange} required />
                   </div>
                 </div>
 
                 <div className="qp-field">
                   <label className="qp-label">Health Goal</label>
-                  <select
-                    className="qp-select"
-                    name="healthGoal"
-                    value={formData.healthGoal}
-                    onChange={handleChange}
-                    required
-                  >
+                  <select className="qp-select" name="healthGoal" value={formData.healthGoal} onChange={handleChange} required>
                     <option value="">Choose your primary focus</option>
                     <option value="lose_weight">Lose Weight</option>
                     <option value="maintain">Maintain Healthy Weight</option>
@@ -253,27 +187,8 @@ function Register() {
                 </div>
 
                 <div className="qp-field">
-                  <label className="qp-label">Home Address</label>
-                  <input
-                    className="qp-input"
-                    type="text"
-                    name="homeAddress"
-                    placeholder="123 Main St, Riyadh"
-                    value={formData.homeAddress}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="qp-field">
-                  <label className="qp-label">Work Address</label>
-                  <input
-                    className="qp-input"
-                    type="text"
-                    name="workAddress"
-                    placeholder="456 Business Ave, Riyadh"
-                    value={formData.workAddress}
-                    onChange={handleChange}
-                  />
+                  <label className="qp-label">Delivery Address</label>
+                  <input className="qp-input" type="text" name="address" placeholder="123 Main St, Riyadh" value={formData.address} onChange={handleChange} />
                 </div>
 
                 <button className="qp-submit" type="submit">
@@ -290,16 +205,15 @@ function Register() {
           </div>
         </main>
 
-        {/* Footer */}
         <footer>
           <div className="qp-footer">
-            <div className="qp-logo">Quiet Premium</div>
+            <div className="qp-logo">Qooti</div>
             <div className="qp-footer-links">
               <a href="#">Privacy Policy</a>
               <a href="#">Terms of Service</a>
               <a href="#">Contact Us</a>
             </div>
-            <p className="qp-copyright">© 2024 Quiet Premium. All rights reserved.</p>
+            <p className="qp-copyright">© 2025 Qooti. All rights reserved.</p>
           </div>
         </footer>
       </div>

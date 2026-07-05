@@ -5,22 +5,21 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="logo">
-        Quiet Premium
+        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
+          🍽️ Qooti
+        </Link>
       </div>
 
       <ul className="nav-links">
-        <li><a href="#">Meal Plans</a></li>
-        <li><a href="#">Customization</a></li>
-        <li><a href="#">Pricing</a></li>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/restaurants">Restaurants</Link></li>
+        <li><Link to="/meal-plans">Meal Plans</Link></li>
       </ul>
 
       <div className="nav-right">
         <Link to="/login" className="login">Login</Link>
-
         <Link to="/register">
-          <button className="signup-btn">
-            Sign Up
-          </button>
+          <button className="signup-btn">Sign Up</button>
         </Link>
       </div>
     </nav>

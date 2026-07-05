@@ -74,7 +74,7 @@ CREATE TABLE discount_code (
 -- No foreign key dependencies — created second
 -- Health profile and address columns are NULL for
 -- restaurant and admin user types (enforced by backend)
--- ⚠️  NOTE FOR MOUDHI (BACKEND) — TEAM DECISION:
+-- ⚠️  NOTE FOR (BACKEND) — TEAM DECISION:
 -- Admin registers through the SAME public registration page
 -- as client/restaurant (user_type = 'admin'), not seeded
 -- manually. This is a known security tradeoff for the MVP —
@@ -91,7 +91,7 @@ CREATE TABLE app_user (
     full_name       VARCHAR(100)            NOT NULL,
     email           VARCHAR(150)            NOT NULL,
     password_hash   VARCHAR(255)            NOT NULL,
-    phone           VARCHAR(15)             DEFAULT NULL,
+    phone           VARCHAR(15)             NOT NULL,
     created_at      TIMESTAMP               NOT NULL DEFAULT NOW(),
     is_active       BOOLEAN                 NOT NULL DEFAULT TRUE,
 
@@ -112,19 +112,18 @@ CREATE TABLE app_user (
     -- Security safeguard for team decision to allow admin
     -- registration via the public register page: only emails
     -- on the team-controlled domain can be user_type = 'admin'.
-    -- Replace 'yourcompany-admin.com' with the actual domain
-    -- the team creates and controls.
+    -- Only qooti_admin.com domain allowed for admin accounts.
     CONSTRAINT chk_admin_email_domain
         CHECK (
             user_type <> 'admin'
-            OR LOWER(email) LIKE '%@qooti-admin.com'
+            OR LOWER(email) LIKE '%@qooti_admin.com'
         )
 );
 
 -- ============================================================
 -- TABLE 3: restaurant
 -- Depends on: app_user
--- ⚠️  NOTE FOR MOUDHI (BACKEND):
+-- ⚠️  NOTE FOR (BACKEND):
 -- When is_verified = TRUE, rejection_reason should be NULL.
 -- When is_verified = FALSE after admin review,
 -- rejection_reason should contain the reason.
@@ -154,7 +153,7 @@ CREATE TABLE restaurant (
 -- Depends on: restaurant
 -- Soft delete pattern: use is_available = FALSE instead of
 -- deleting meals that are referenced in order_item history
--- ⚠️  NOTE FOR MOUDHI (BACKEND):
+-- ⚠️  NOTE FOR (BACKEND):
 -- tags is a TEXT[] array. PostgreSQL does not enforce allowed
 -- values natively — validate that submitted tags contain only
 -- allowed values at the API level.
@@ -188,7 +187,7 @@ CREATE TABLE meal (
 -- Depends on: app_user, discount_code
 -- end_date is always start_date + 6 days — backend calculates,
 -- database stores for simpler queries
--- ⚠️  NOTE FOR MOUDHI (BACKEND):
+-- ⚠️  NOTE FOR (BACKEND):
 -- Only users with user_type = 'client' should be allowed to
 -- create a subscription. Restaurant and admin users must be
 -- rejected at the API level before any INSERT is attempted.
@@ -231,7 +230,7 @@ CREATE TABLE subscription (
 -- ============================================================
 -- TABLE 6: order_item
 -- Depends on: subscription, meal
--- ⚠️  NOTE FOR MOUDHI (BACKEND):
+-- ⚠️  NOTE FOR (BACKEND):
 -- Once an order_item row is inserted, NO UPDATE or DELETE
 -- should be allowed through the API — meal selection is
 -- locked on confirmation.
@@ -266,7 +265,7 @@ CREATE TABLE order_item (
 -- TABLE 7: payment
 -- Depends on: subscription
 -- One payment row per subscription (enforced by UNIQUE).
--- ⚠️  NOTE FOR MOUDHI (BACKEND):
+-- ⚠️  NOTE FOR (BACKEND):
 -- Create the payment row with payment_status = 'pending'
 -- immediately after the subscription is inserted.
 -- Update to 'success' or 'failed' based on the Payment
@@ -298,7 +297,7 @@ CREATE TABLE payment (
 -- TABLE 8: review
 -- Depends on: order_item, app_user
 -- One review per order_item (enforced by UNIQUE).
--- ⚠️  NOTE FOR MOUDHI (BACKEND):
+-- ⚠️  NOTE FOR (BACKEND):
 -- Verify that the user_id on the review matches the user_id
 -- on the subscription that owns the order_item — clients can
 -- only review their own meals.

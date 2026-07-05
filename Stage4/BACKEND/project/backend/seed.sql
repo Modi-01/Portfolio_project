@@ -1,28 +1,29 @@
 -- ============================================================
 -- Qooti — Mock Seed Data
 -- Sprint 1, Task 5: 2 restaurants, 5 meals each, 1 admin user
--- Run AFTER schema.sql has been executed successfully
+-- Run AFTER schema0.1.sql has been executed successfully
 -- ============================================================
 
 -- ============================================================
 -- 1 ADMIN USER
 -- Email must match the admin domain constraint (chk_admin_email_domain)
 -- ============================================================
-INSERT INTO app_user (user_type, full_name, email, password_hash)
+INSERT INTO app_user (user_type, full_name, email, password_hash, phone)
 VALUES (
     'admin',
     'Qooti Admin',
-    'admin@yourcompany-admin.com',
-    '$2b$10$placeholderhashvalueforadminuser000000000000000000'
+    'admin@qooti_admin.com',
+    '$2b$10$placeholderhashvalueforadminuser000000000000000000',
+    '+966501234567'
 );
 
 -- ============================================================
 -- 2 RESTAURANT OWNER ACCOUNTS (app_user)
 -- ============================================================
-INSERT INTO app_user (user_type, full_name, email, password_hash)
+INSERT INTO app_user (user_type, full_name, email, password_hash, phone)
 VALUES
-    ('restaurant', 'Sara Al-Fahad', 'greenbowl.owner@example.com', '$2b$10$placeholderhashvalueforrestaurant1000000000000'),
-    ('restaurant', 'Faisal Al-Mutairi', 'fitkitchen.owner@example.com', '$2b$10$placeholderhashvalueforrestaurant2000000000000');
+    ('restaurant', 'Sara Al-Fahad', 'greenbowl.owner@example.com', '$2b$10$placeholderhashvalueforrestaurant1000000000000', '+966502345678'),
+    ('restaurant', 'Faisal Al-Mutairi', 'fitkitchen.owner@example.com', '$2b$10$placeholderhashvalueforrestaurant2000000000000', '+966503456789');
 
 -- ============================================================
 -- 2 RESTAURANTS (linked to the two accounts above)

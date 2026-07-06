@@ -110,6 +110,10 @@ function RestaurantLogin() {
               <p className="rl-footer-link">
                 Don't have a restaurant account? <Link to="/restaurant-register">Register</Link>
               </p>
+
+              <p className="rl-footer-link">
+                Are you a customer? <Link to="/login">Login here</Link>
+              </p>
             </div>
           </section>
         </main>

@@ -139,7 +139,7 @@ function RestaurantRegister() {
                   </div>
                   <div className="pr-field">
                     <label className="pr-label">Phone Number</label>
-                    <input className="pr-input" type="tel" name="phone" placeholder="+1 (555) 000-0000" value={formData.phone} onChange={handleChange} required />
+                    <input className="pr-input" type="tel" name="phone" placeholder="+966 54321 0987" value={formData.phone} onChange={handleChange} required />
                   </div>
                 </div>
 

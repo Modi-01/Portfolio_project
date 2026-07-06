@@ -1,7 +1,16 @@
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <nav className="navbar">
       <div className="logo">
@@ -17,10 +26,19 @@ function Navbar() {
       </ul>
 
       <div className="nav-right">
-        <Link to="/login" className="login">Login</Link>
-        <Link to="/register">
-          <button className="signup-btn">Sign Up</button>
-        </Link>
+        {user ? (
+          <>
+            <span className="login">{user.full_name}</span>
+            <button className="signup-btn" onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="login">Login</Link>
+            <Link to="/register">
+              <button className="signup-btn">Sign Up</button>
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );

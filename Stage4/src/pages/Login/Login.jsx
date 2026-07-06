@@ -153,6 +153,11 @@ function Login() {
                 <Link to="/register">Sign Up</Link>
               </p>
 
+              <p className="login-footer-link">
+                Are you a restaurant owner?
+                <Link to="/restaurant-login">Login here</Link>
+              </p>
+
               <div className="login-brand-footer">
                 <p>© 2025 Qooti. All rights reserved.</p>
               </div>

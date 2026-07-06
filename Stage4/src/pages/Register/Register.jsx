@@ -4,12 +4,12 @@ import { registerUser } from "../../services/auth";
 
 function Register() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    phone: "",
     age: "",
     gender: "",
     height: "",
@@ -18,54 +18,49 @@ function Register() {
     homeAddress: "",
     workAddress: "",
     password: "",
-    role: "customer", // Added role field
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    if (error) setError("");
-    if (success) setSuccess("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
-    setSuccess("");
+    setIsSubmitting(true);
+
+    const address = [
+      formData.homeAddress && `Home: ${formData.homeAddress}`,
+      formData.workAddress && `Work: ${formData.workAddress}`,
+    ]
+      .filter(Boolean)
+      .join(" | ");
 
     try {
-      // Convert string numbers to numbers
-      const dataToSend = {
-        name: formData.fullName,
+      await registerUser({
+        user_type: "client",
+        full_name: formData.fullName,
         email: formData.email,
         password: formData.password,
-        age: parseInt(formData.age),
+        phone: formData.phone,
+        age: Number(formData.age),
         gender: formData.gender,
-        height: parseFloat(formData.height),
-        weight: parseFloat(formData.weight),
-        healthGoal: formData.healthGoal,
-        homeAddress: formData.homeAddress,
-        workAddress: formData.workAddress,
-        role: formData.role || "customer",
-      };
-
-      const response = await registerUser(dataToSend);
-      
-      setSuccess("Registration successful! Please login.");
-      
-      // Redirect to login after 2 seconds
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
+        height_cm: Number(formData.height),
+        weight_kg: Number(formData.weight),
+        health_goal: formData.healthGoal,
+        address,
+      });
+      navigate("/login");
     } catch (err) {
-      setError(err.message || "Registration failed. Please try again.");
+      setError(err.message);
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
     <>
+      {/* Google Fonts */}
       <link
         href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
         rel="stylesheet"
@@ -107,16 +102,13 @@ function Register() {
         .qp-label { font-size: 14px; font-weight: 600; color: #414941; margin-left: 4px; }
         .qp-input { width: 100%; height: 48px; padding: 0 16px; border-radius: 12px; background: #f4f4ee; border: 2px solid transparent; font-size: 16px; color: #1a1c19; transition: border-color 0.2s, background 0.2s; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         .qp-input:focus { outline: none; border-color: #325f3f; background: #fff; }
-        .qp-input.error { border-color: #dc3545; background: #fff5f5; }
-        .qp-input.success { border-color: #28a745; background: #f0fff4; }
         .qp-select { width: 100%; height: 48px; padding: 0 16px; border-radius: 12px; background: #f4f4ee; border: 2px solid transparent; font-size: 16px; color: #1a1c19; transition: border-color 0.2s; box-sizing: border-box; appearance: none; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; }
         .qp-select:focus { outline: none; border-color: #325f3f; background: #fff; }
-        .qp-error { background: #f8d7da; color: #721c24; padding: 12px 16px; border-radius: 8px; font-size: 14px; border: 1px solid #f5c6cb; display: flex; align-items: center; gap: 8px; }
-        .qp-success { background: #d4edda; color: #155724; padding: 12px 16px; border-radius: 8px; font-size: 14px; border: 1px solid #c3e6cb; display: flex; align-items: center; gap: 8px; }
         .qp-submit { width: 100%; background: #325f3f; color: #fff; height: 56px; border-radius: 9999px; border: none; font-family: 'Hanken Grotesk', sans-serif; font-size: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 8px 24px rgba(50,95,63,0.2); transition: background 0.2s, transform 0.1s; margin-top: 16px; }
-        .qp-submit:hover:not(:disabled) { background: #4a7856; }
-        .qp-submit:active:not(:disabled) { transform: scale(0.98); }
+        .qp-submit:hover { background: #4a7856; }
+        .qp-submit:active { transform: scale(0.98); }
         .qp-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+        .qp-error { font-size: 14px; color: #b3261e; margin-top: -8px; }
         .qp-footer-link { text-align: center; font-size: 14px; font-weight: 600; color: #5e5e5b; margin-top: 24px; }
         .qp-footer-link a { color: #325f3f; font-weight: 700; text-decoration: none; }
         .qp-footer-link a:hover { text-decoration: underline; }
@@ -126,8 +118,6 @@ function Register() {
         .qp-footer-links a:hover { color: #325f3f; }
         .qp-copyright { font-size: 12px; color: #5e5e5b; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; font-family: 'Material Symbols Outlined'; }
-        .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.6s ease-in-out infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
       `}</style>
 
       <div className="qp-body">
@@ -142,8 +132,8 @@ function Register() {
               <a href="#">About</a>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              <Link to="/login" className="qp-btn-outline">Log In</Link>
-              <Link to="/register" className="qp-btn-primary">Sign Up</Link>
+              <button className="qp-btn-outline">Log In</button>
+              <button className="qp-btn-primary">Sign Up</button>
             </div>
           </div>
         </nav>
@@ -186,108 +176,83 @@ function Register() {
               </p>
 
               <form className="qp-form" onSubmit={handleSubmit}>
-                {error && (
-                  <div className="qp-error">
-                    <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>error</span>
-                    {error}
-                  </div>
-                )}
-
-                {success && (
-                  <div className="qp-success">
-                    <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>check_circle</span>
-                    {success}
-                  </div>
-                )}
-
                 <div className="qp-field">
-                  <label className="qp-label">Full Name *</label>
+                  <label className="qp-label">Full Name</label>
                   <input
-                    className={`qp-input ${error && !formData.fullName ? 'error' : ''}`}
+                    className="qp-input"
                     type="text"
                     name="fullName"
                     placeholder="John Doe"
                     value={formData.fullName}
                     onChange={handleChange}
                     required
-                    disabled={loading}
                   />
                 </div>
 
                 <div className="qp-field">
-                  <label className="qp-label">Email Address *</label>
+                  <label className="qp-label">Email Address</label>
                   <input
-                    className={`qp-input ${error && !formData.email ? 'error' : ''}`}
+                    className="qp-input"
                     type="email"
                     name="email"
                     placeholder="name@example.com"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    disabled={loading}
                   />
                 </div>
 
                 <div className="qp-field">
-                  <label className="qp-label">Password *</label>
+                  <label className="qp-label">Phone Number</label>
                   <input
-                    className={`qp-input ${error && !formData.password ? 'error' : ''}`}
+                    className="qp-input"
+                    type="tel"
+                    name="phone"
+                    placeholder="+966 5xxxxxxxx"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="qp-field">
+                  <label className="qp-label">Password</label>
+                  <input
+                    className="qp-input"
                     type="password"
                     name="password"
                     placeholder="••••••••"
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    disabled={loading}
-                    minLength="8"
                   />
-                  <small style={{ fontSize: "12px", color: "#717971" }}>Must be at least 8 characters.</small>
-                </div>
-
-                <div className="qp-field">
-                  <label className="qp-label">Role</label>
-                  <select
-                    className="qp-select"
-                    name="role"
-                    value={formData.role}
-                    onChange={handleChange}
-                    disabled={loading}
-                  >
-                    <option value="customer">Customer</option>
-                    <option value="restaurant">Restaurant Owner</option>
-                  </select>
                 </div>
 
                 <div className="qp-grid2">
                   <div className="qp-field">
-                    <label className="qp-label">Age *</label>
+                    <label className="qp-label">Age</label>
                     <input
-                      className={`qp-input ${error && !formData.age ? 'error' : ''}`}
+                      className="qp-input"
                       type="number"
                       name="age"
                       placeholder="25"
                       value={formData.age}
                       onChange={handleChange}
                       required
-                      disabled={loading}
-                      min="18"
-                      max="100"
                     />
                   </div>
                   <div className="qp-field">
-                    <label className="qp-label">Gender *</label>
+                    <label className="qp-label">Gender</label>
                     <select
                       className="qp-select"
                       name="gender"
                       value={formData.gender}
                       onChange={handleChange}
                       required
-                      disabled={loading}
                     >
                       <option value="">Select</option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
-                      <option value="other">Other</option>
                     </select>
                   </div>
                 </div>
@@ -302,10 +267,7 @@ function Register() {
                       placeholder="170"
                       value={formData.height}
                       onChange={handleChange}
-                      disabled={loading}
-                      step="0.1"
-                      min="50"
-                      max="300"
+                      required
                     />
                   </div>
                   <div className="qp-field">
@@ -317,10 +279,7 @@ function Register() {
                       placeholder="65"
                       value={formData.weight}
                       onChange={handleChange}
-                      disabled={loading}
-                      step="0.1"
-                      min="10"
-                      max="500"
+                      required
                     />
                   </div>
                 </div>
@@ -332,13 +291,13 @@ function Register() {
                     name="healthGoal"
                     value={formData.healthGoal}
                     onChange={handleChange}
-                    disabled={loading}
+                    required
                   >
                     <option value="">Choose your primary focus</option>
                     <option value="lose_weight">Lose Weight</option>
                     <option value="maintain">Maintain Healthy Weight</option>
-                    <option value="gain_muscle">Gain Muscle</option>
-                    <option value="healthy_lifestyle">Healthy Lifestyle</option>
+                    <option value="bulking">Bulking</option>
+                    <option value="gaining_weight">Gaining Weight</option>
                   </select>
                 </div>
 
@@ -351,7 +310,6 @@ function Register() {
                     placeholder="123 Main St, Riyadh"
                     value={formData.homeAddress}
                     onChange={handleChange}
-                    disabled={loading}
                   />
                 </div>
 
@@ -364,22 +322,14 @@ function Register() {
                     placeholder="456 Business Ave, Riyadh"
                     value={formData.workAddress}
                     onChange={handleChange}
-                    disabled={loading}
                   />
                 </div>
 
-                <button className="qp-submit" type="submit" disabled={loading}>
-                  {loading ? (
-                    <>
-                      <span className="spinner"></span>
-                      Creating Account...
-                    </>
-                  ) : (
-                    <>
-                      Create Account
-                      <span className="material-symbols-outlined">arrow_forward</span>
-                    </>
-                  )}
+                {error && <p className="qp-error">{error}</p>}
+
+                <button className="qp-submit" type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Creating Account..." : "Create Account"}
+                  <span className="material-symbols-outlined">arrow_forward</span>
                 </button>
               </form>
 

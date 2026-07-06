@@ -1,88 +1,38 @@
-// src/services/auth.js
-// ✅ Use import.meta.env for Vite (NOT process.env)
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
-export const registerUser = async (userData) => {
-  try {
-    const response = await fetch(`${API_URL}/auth/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
+async function request(path, body) {
+  const res = await fetch(`${API_BASE_URL}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 
-    const data = await response.json();
+  const data = await res.json();
 
-    if (!response.ok) {
-      throw new Error(data.message || data.detail || 'Registration failed');
-    }
-
-    return data;
-  } catch (error) {
-    if (error.message === 'Failed to fetch') {
-      throw new Error('Unable to connect to the server.');
-    }
-    throw error;
+  if (!res.ok) {
+    throw new Error(data.detail || "Request failed.");
   }
-};
 
-export const loginUser = async (email, password) => {
-  try {
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+  return data;
+}
 
-    const data = await response.json();
+export function registerUser(payload) {
+  return request("/api/auth/register", payload);
+}
 
-    if (!response.ok) {
-      throw new Error(data.message || data.detail || 'Login failed');
-    }
+export function loginUser(credentials) {
+  return request("/api/auth/login", credentials);
+}
 
-    return data;
-  } catch (error) {
-    if (error.message === 'Failed to fetch') {
-      throw new Error('Unable to connect to the server.');
-    }
-    throw error;
-  }
-};
+export function logoutUser() {
+  return request("/api/auth/logout", {});
+}
 
-export const logoutUser = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/auth/logout`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
+export function isAuthenticated() {
+  return !!localStorage.getItem("token");
+}
 
-    if (!response.ok) {
-      throw new Error('Logout failed');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Logout error:', error);
-    throw error;
-  }
-};
-
-export const getCurrentUser = () => {
-  try {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-  } catch {
-    return null;
-  }
-};
-
-export const isAuthenticated = () => {
-  return !!localStorage.getItem('token');
-};
+export function getCurrentUser() {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : null;
+}

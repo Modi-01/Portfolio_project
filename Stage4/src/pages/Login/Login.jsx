@@ -1,8 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../../services/auth";
+import { useAuth } from "../../context/AuthContext";
 
 function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -12,9 +18,20 @@ function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login:", formData);
+    setError("");
+    setIsSubmitting(true);
+
+    try {
+      const data = await loginUser(formData);
+      login(data.access_token, data.user);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -57,6 +74,8 @@ function Login() {
         .login-submit { width: 100%; background: #325f3f; color: #fff; height: 56px; border-radius: 9999px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.1s; font-family: 'Plus Jakarta Sans', sans-serif; }
         .login-submit:hover { background: #4a7856; box-shadow: 0 8px 24px rgba(50,95,63,0.2); }
         .login-submit:active { transform: scale(0.98); }
+        .login-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+        .login-error { font-size: 14px; color: #b3261e; margin: -8px 0 0; }
         .login-footer-link { text-align: center; font-size: 16px; color: #414941; margin-top: 24px; }
         .login-footer-link a { color: #325f3f; font-weight: 600; text-decoration: none; margin-left: 4px; }
         .login-footer-link a:hover { text-decoration: underline; }
@@ -122,7 +141,11 @@ function Login() {
                   <p className="login-hint">Must be at least 8 characters.</p>
                 </div>
 
-                <button className="login-submit" type="submit">Sign In</button>
+                {error && <p className="login-error">{error}</p>}
+
+                <button className="login-submit" type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Signing In..." : "Sign In"}
+                </button>
               </form>
 
               <p className="login-footer-link">

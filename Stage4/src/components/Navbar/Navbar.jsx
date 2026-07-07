@@ -14,7 +14,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="logo">
-        <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
+        <Link to="/" style={{ color: 'DarkGreen', textDecoration: 'none' }}>
           🍽️ Qooti
         </Link>
       </div>

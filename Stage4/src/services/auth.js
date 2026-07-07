@@ -36,3 +36,23 @@ export function getCurrentUser() {
   const user = localStorage.getItem("user");
   return user ? JSON.parse(user) : null;
 }
+
+export async function authRequest(path, method = "GET", body = null) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_BASE_URL}${path}`, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.detail || "Request failed.");
+  }
+
+  return data;
+}

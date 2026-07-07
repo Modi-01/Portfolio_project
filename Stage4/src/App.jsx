@@ -3,6 +3,9 @@ import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
+import RestaurantRegister from "./pages/RestaurantRegister/RestaurantRegister";
+import RestaurantLogin from "./pages/RestaurantLogin/RestaurantLogin";
+import AdminPendingRestaurants from "./pages/AdminPendingRestaurants/AdminPendingRestaurants";
 
 function App() {
   return (
@@ -12,6 +15,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/restaurant-register" element={<RestaurantRegister />} />
+          <Route path="/restaurant-login" element={<RestaurantLogin />} />
+          <Route path="/admin/pending-restaurants" element={<AdminPendingRestaurants />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

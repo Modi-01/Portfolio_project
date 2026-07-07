@@ -124,7 +124,7 @@ function Login() {
               <form className="login-form" onSubmit={handleSubmit}>
                 <div className="login-field">
                   <label className="login-label">Email Address</label>
-                  <input className="login-input" type="email" name="email" placeholder="name@example.com" value={formData.email} onChange={handleChange} required />
+                  <input className="login-input" type="text" name="email" placeholder="name@example.com" value={formData.email} onChange={handleChange} required />
                 </div>
 
                 <div className="login-field">

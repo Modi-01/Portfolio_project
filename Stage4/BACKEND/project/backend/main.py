@@ -4,6 +4,8 @@ from database import get_db_connection
 from routes.auth_routes import router as auth_router
 from routes.admin_routes import router as admin_router
 from routes.restaurant_routes import router as restaurant_router
+from routes.subscription_routes import router as subscription_router
+from routes.payment_routes import router as payment_router
 
 app = FastAPI()
 
@@ -18,3 +20,5 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(admin_router)
 app.include_router(restaurant_router)
+app.include_router(subscription_router)
+app.include_router(payment_router)

@@ -1,6 +1,8 @@
 from typing import Optional
 from pydantic import BaseModel
 from enum import Enum
+from datetime import date, time
+from decimal import Decimal
 
 
 class UserType(str, Enum):
@@ -112,3 +114,42 @@ class UpdateRestaurantStatusResponse(BaseModel):
     message: str
     restaurant_id: int
     is_verified: bool
+
+# Subscription & Payment Schemas
+
+class SubscriptionCreateRequest(BaseModel):
+    start_date: date
+    end_date: date
+    delivery_time: time
+    discount_code_id: Optional[int] = None
+
+
+class SubscriptionCreateResponse(BaseModel):
+    message: str
+    subscription_id: int
+    user_id: int
+    start_date: date
+    end_date: date
+    delivery_time: time
+    discount_code_id: Optional[int] = None
+    original_price: Decimal
+    discount_amount: Decimal
+    final_price: Decimal
+    status: str
+    payment_id: int
+    payment_status: str
+    created_at: str
+
+
+class PaymentProcessRequest(BaseModel):
+    subscription_id: int
+
+
+class PaymentProcessResponse(BaseModel):
+    message: str
+    payment_id: int
+    subscription_id: int
+    payment_status: str
+    amount: Decimal
+    transaction_id: str
+    subscription_status: str

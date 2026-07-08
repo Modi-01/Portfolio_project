@@ -81,6 +81,22 @@ class RestaurantDetailResponse(BaseModel):
     rejection_reason: Optional[str] = None
     created_at: str
 
+# Public Restaurant Schemas (no auth — must not expose rejection_reason)
+
+class PublicRestaurantListResponse(BaseModel):
+    restaurant_id: int
+    restaurant_name: str
+    description: Optional[str] = None
+    logo_url: Optional[str] = None
+
+
+class PublicRestaurantDetailResponse(BaseModel):
+    restaurant_id: int
+    restaurant_name: str
+    description: Optional[str] = None
+    logo_url: Optional[str] = None
+    is_verified: bool
+    created_at: str
 
 class RestaurantStatus(str, Enum):
     approved = "approved"

@@ -1,21 +1,26 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
-import Restaurants from "./pages/Restaurants/Restaurants";
-import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import RestaurantRegister from "./pages/RestaurantRegister/RestaurantRegister";
+import RestaurantLogin from "./pages/RestaurantLogin/RestaurantLogin";
+import AdminPendingRestaurants from "./pages/AdminPendingRestaurants/AdminPendingRestaurants";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/restaurants" element={<Restaurants />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/restaurant-register" element={<RestaurantRegister />} />
+          <Route path="/restaurant-login" element={<RestaurantLogin />} />
+          <Route path="/admin/pending-restaurants" element={<AdminPendingRestaurants />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

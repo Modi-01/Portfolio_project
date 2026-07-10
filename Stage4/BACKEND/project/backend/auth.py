@@ -1,3 +1,5 @@
+import token
+
 from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta, timezone
@@ -34,3 +36,18 @@ def create_access_token(data: dict):
     token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
     return token
+
+
+
+def verify_token(token: str):
+    """Verify JWT token and return payload"""
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except jwt.ExpiredSignatureError:
+        raise Exception("Token has expired")
+    except jwt.JWTClaimsError:
+        raise Exception("Invalid token claims")
+    except jwt.JWTError:
+        raise Exception("Invalid token")
+    

@@ -7,7 +7,7 @@ import RestaurantRegister from "./pages/RestaurantRegister/RestaurantRegister";
 import RestaurantLogin from "./pages/RestaurantLogin/RestaurantLogin";
 import AdminPendingRestaurants from "./pages/AdminPendingRestaurants/AdminPendingRestaurants";
 import WeeklyMealSelection from "./pages/WeeklyMealSelection/WeeklyMealSelection";
-
+import OrderSummary from "./pages/OrderSummary/OrderSummary";
 function App() {
   return (
     <AuthProvider>
@@ -20,6 +20,7 @@ function App() {
           <Route path="/restaurant-login" element={<RestaurantLogin />} />
           <Route path="/admin/pending-restaurants" element={<AdminPendingRestaurants />} />
           <Route path="/weekly-selection" element={<WeeklyMealSelection />} />
+          <Route path="/order-summary" element={<OrderSummary />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

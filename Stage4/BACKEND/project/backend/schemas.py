@@ -1,6 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel
 from enum import Enum
+from datetime import date
 
 
 class UserType(str, Enum):
@@ -60,6 +61,44 @@ class LoginResponse(BaseModel):
 
 class MessageResponse(BaseModel):
     message: str
+
+class MealCreateRequest(BaseModel):
+    restaurant_id: int
+    name: str
+    description: str
+    ingredients: str
+    calories: int
+    protein_g: float
+    carbs_g: float
+    fats_g: float
+    image_url: str
+    tags: List[str]
+
+
+class MealUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    ingredients: Optional[str] = None
+    calories: Optional[int] = None
+    protein_g: Optional[float] = None
+    carbs_g: Optional[float] = None
+    fats_g: Optional[float] = None
+    image_url: Optional[str] = None
+    tags: Optional[List[str]] = None
+
+
+class MealResponse(BaseModel):
+    message: str
+
+class MealSelectionItem(BaseModel):
+    meal_id: int
+    day_date: date
+    day_of_week: str
+
+
+class MealSelectionsCreateRequest(BaseModel):
+    subscription_id: int
+    selections: List[MealSelectionItem]
 
 
 # Admin Restaurant Management Schemas

@@ -22,7 +22,7 @@ function Navbar() {
       <ul className="nav-links">
         <li><Link to="/">Home</Link></li>
         <li><Link to="/restaurants">Restaurants</Link></li>
-        <li><Link to="/meal-plans">Meal Plans</Link></li>
+        <li><Link to="/weekly-selection">Meal Plans</Link></li>
       </ul>
 
       <div className="nav-right">

@@ -159,7 +159,7 @@ function Login() {
               </p>
 
               <div className="login-brand-footer">
-                <p>© 2025 Qooti. All rights reserved.</p>
+                <p>© 2026 Qooti. Effortless Health.</p>
               </div>
             </div>
           </section>

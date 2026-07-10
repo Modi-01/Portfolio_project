@@ -350,7 +350,7 @@ function Register() {
               <a href="#">Terms of Service</a>
               <a href="#">Contact Us</a>
             </div>
-            <p className="qp-copyright">© 2024 Quiet Premium. All rights reserved.</p>
+            <p className="qp-copyright">© 2026 Qooti. Effortless Health.</p>
           </div>
         </footer>
       </div>

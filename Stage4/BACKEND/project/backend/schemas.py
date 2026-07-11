@@ -83,6 +83,7 @@ class RestaurantDetailResponse(BaseModel):
     rejection_reason: Optional[str] = None
     created_at: str
 
+
 # Public Restaurant Schemas (no auth — must not expose rejection_reason)
 
 class PublicRestaurantListResponse(BaseModel):
@@ -100,6 +101,7 @@ class PublicRestaurantDetailResponse(BaseModel):
     is_verified: bool
     created_at: str
 
+
 class RestaurantStatus(str, Enum):
     approved = "approved"
     rejected = "rejected"
@@ -114,6 +116,7 @@ class UpdateRestaurantStatusResponse(BaseModel):
     message: str
     restaurant_id: int
     is_verified: bool
+
 
 # Subscription & Payment Schemas
 
@@ -143,6 +146,11 @@ class SubscriptionCreateResponse(BaseModel):
 
 class PaymentProcessRequest(BaseModel):
     subscription_id: int
+    card_number: str
+    card_expiry_month: int
+    card_expiry_year: int
+    card_cvc: str
+    card_holder_name: str
 
 
 class PaymentProcessResponse(BaseModel):
@@ -153,3 +161,5 @@ class PaymentProcessResponse(BaseModel):
     amount: Decimal
     transaction_id: str
     subscription_status: str
+    # Moyasar 3D Secure page the customer must visit to complete the payment
+    transaction_url: Optional[str] = None

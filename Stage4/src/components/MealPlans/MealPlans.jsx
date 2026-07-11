@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MealPlans.css";
 
 import meal1 from "../../assets/Plan 1.png";
@@ -5,12 +7,15 @@ import meal2 from "../../assets/Plan 2.png";
 import meal3 from "../../assets/Plan 3.png";
 
 function MealPlans() {
+  const navigate = useNavigate();
+  const [planType, setPlanType] = useState("weekly");
+
   const meals = [
     {
       image: meal1,
       title: "The Lean Protocol",
       description:
-        "Optimized for fat loss while maintaining muscle mass. Low-carb, high-protein.",
+        "Optimized for fat loss while maintaining muscle mass. Low-carb,high-protein.",
       price: "$12.50",
       tag1: "High Protein",
       tag2: "Weight Loss",
@@ -54,11 +59,17 @@ function MealPlans() {
 
         <div className="meal-toggle">
 
-          <button className="active">
+          <button
+            className={planType === "weekly" ? "active" : ""}
+            onClick={() => setPlanType("weekly")}
+          >
             Weekly
           </button>
 
-          <button>
+          <button
+            className={planType === "monthly" ? "active" : ""}
+            onClick={() => setPlanType("monthly")}
+          >
             Monthly
           </button>
 
@@ -95,11 +106,13 @@ function MealPlans() {
               <div className="meal-footer">
 
                 <span className="price">
-                  {meal.price}
-                  <small>/meal</small>
+                  {planType === "monthly"
+                    ? `$${(parseFloat(meal.price.slice(1)) * 4).toFixed(2)}`
+                    : meal.price}
+                  <small>{planType === "monthly" ? "/month" : "/meal"}</small>
                 </span>
 
-                <button className="select-btn">
+                <button className="select-btn" onClick={() => navigate("/weekly-selection")}>
                   Select →
                 </button>
 

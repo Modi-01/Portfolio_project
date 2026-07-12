@@ -689,3 +689,68 @@ def get_restaurant_orders(
             cursor.close()
         if conn:
             conn.close()
+
+# Retrieves the restaurant profile linked to the currently logged-in restaurant user.
+@router.get("/restaurants/me")
+def get_current_restaurant(
+    current_user: dict = Depends(get_current_user)
+):
+    conn = None
+    cursor = None
+
+    try:
+        # Only restaurant users can access this endpoint
+        if current_user["user_type"] != "restaurant":
+            raise HTTPException(
+                status_code=403,
+                detail="Only restaurant users can access restaurant profile information."
+            )
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Find the restaurant linked to the logged-in user
+        cursor.execute(
+            """
+            SELECT
+                restaurant_id,
+                user_id,
+                restaurant_name,
+                description,
+                logo_url,
+                is_verified,
+                rejection_reason,
+                created_at
+            FROM restaurant
+            WHERE user_id = %s;
+            """,
+            (current_user["user_id"],)
+        )
+
+        restaurant = cursor.fetchone()
+
+        if not restaurant:
+            raise HTTPException(
+                status_code=404,
+                detail="No restaurant profile is linked to this user."
+            )
+
+        return {
+            "restaurant": restaurant
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
+
+    finally:
+        if cursor:
+            cursor.close()
+
+        if conn:
+            conn.close()

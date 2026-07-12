@@ -33,7 +33,7 @@ function Footer() {
           <h4>Explore</h4>
 
           <a href="#">About</a>
-          <a href="#">FAQ</a>
+          <a href="#faq">FAQ</a>
           <a href="#">Contact</a>
         </div>
 

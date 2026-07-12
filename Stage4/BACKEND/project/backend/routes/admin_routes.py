@@ -5,7 +5,8 @@ from schemas import (
     RestaurantDetailResponse,
     UpdateRestaurantStatusRequest,
     UpdateRestaurantStatusResponse,
-    RestaurantStatus
+    RestaurantStatus,
+    AdminOverviewResponse
 )
 from auth import verify_token
 
@@ -30,6 +31,39 @@ def verify_admin(authorization: str = Header(None)) -> dict:
         raise
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
+
+
+@router.get("/overview", response_model=AdminOverviewResponse)
+def get_admin_overview(admin_user: dict = Depends(verify_admin)):
+    """Get summary counts for the admin dashboard"""
+    conn = None
+    cursor = None
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            SELECT
+                (SELECT COUNT(*) FROM restaurant) AS total_restaurants,
+                (SELECT COUNT(*) FROM restaurant
+                 WHERE is_verified = FALSE AND rejection_reason IS NULL) AS pending_restaurants,
+                (SELECT COUNT(*) FROM app_user WHERE user_type = 'client') AS total_customers,
+                (SELECT COUNT(*) FROM subscription) AS total_orders;
+            """
+        )
+
+        return dict(cursor.fetchone())
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 
 @router.get("/restaurants", response_model=list[RestaurantDetailResponse])

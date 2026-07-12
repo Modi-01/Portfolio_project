@@ -27,7 +27,7 @@ function FAQ() {
   };
 
   return (
-    <section className="faq">
+    <section className="faq" id="faq">
 
       <div className="faq-title">
         <h2>Frequently Asked Questions</h2>

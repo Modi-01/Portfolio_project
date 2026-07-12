@@ -155,6 +155,13 @@ class UpdateRestaurantStatusResponse(BaseModel):
     is_verified: bool
 
 
+class AdminOverviewResponse(BaseModel):
+    total_restaurants: int
+    pending_restaurants: int
+    total_customers: int
+    total_orders: int
+
+
 # Subscription & Payment Schemas
 
 class SubscriptionCreateRequest(BaseModel):

@@ -11,6 +11,7 @@ import OrderSummary from "./pages/OrderSummary/OrderSummary";
 import MyMeals from "./pages/MyMeals/MyMeals";
 import AddMeal from "./pages/AddMeal/AddMeal";
 import EditMeal from "./pages/EditMeal/EditMeal";
+import CustomerDashboard from "./pages/CustomerDashboard/CustomerDashboard";
 function App() {
   return (
     <AuthProvider>
@@ -27,6 +28,7 @@ function App() {
           <Route path="/restaurant/meals" element={<MyMeals />} />
           <Route path="/restaurant/meals/new" element={<AddMeal />} />
           <Route path="/restaurant/meals/:mealId/edit" element={<EditMeal />} />
+          <Route path="/dashboard" element={<CustomerDashboard />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

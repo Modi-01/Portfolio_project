@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MealPlans.css";
 
 import meal1 from "../../assets/Plan 1.png";
@@ -5,13 +7,16 @@ import meal2 from "../../assets/Plan 2.png";
 import meal3 from "../../assets/Plan 3.png";
 
 function MealPlans() {
+  const navigate = useNavigate();
+  const [planType, setPlanType] = useState("weekly");
+
   const meals = [
     {
       image: meal1,
       title: "The Lean Protocol",
       description:
-        "Optimized for fat loss while maintaining muscle mass. Low-carb, high-protein.",
-      price: "$12.50",
+        "Optimized for fat loss while maintaining muscle mass. Low-carb,high-protein.",
+      price: 46.9,
       tag1: "High Protein",
       tag2: "Weight Loss",
     },
@@ -20,7 +25,7 @@ function MealPlans() {
       title: "The Performance Peak",
       description:
         "Calorie-dense, balanced macros for athletes and those looking to gain muscle.",
-      price: "$14.00",
+      price: 52.5,
       tag1: "High Calories",
       tag2: "Muscle Gain",
     },
@@ -29,7 +34,7 @@ function MealPlans() {
       title: "The Vitality Garden",
       description:
         "Creative vegetarian and vegan dishes that never compromise on flavor.",
-      price: "$11.75",
+      price: 44.05,
       tag1: "Plant Based",
       tag2: "Vegetarian",
     },
@@ -54,11 +59,17 @@ function MealPlans() {
 
         <div className="meal-toggle">
 
-          <button className="active">
+          <button
+            className={planType === "weekly" ? "active" : ""}
+            onClick={() => setPlanType("weekly")}
+          >
             Weekly
           </button>
 
-          <button>
+          <button
+            className={planType === "monthly" ? "active" : ""}
+            onClick={() => setPlanType("monthly")}
+          >
             Monthly
           </button>
 
@@ -68,48 +79,50 @@ function MealPlans() {
 
       <div className="meal-grid">
 
-        {meals.map((meal, index) => (
+        {meals.map((meal, index) => {
+          const displayPrice = planType === "monthly" ? meal.price * 4 : meal.price;
 
-          <div className="meal-card" key={index}>
+          return (
+            <div className="meal-card" key={index}>
 
-            <img
-              src={meal.image}
-              alt={meal.title}
-              className="meal-image"
-            />
+              <img
+                src={meal.image}
+                alt={meal.title}
+                className="meal-image"
+              />
 
-            <div className="meal-content">
+              <div className="meal-content">
 
-              <div className="meal-tags">
+                <div className="meal-tags">
 
-                <span>{meal.tag1}</span>
+                  <span>{meal.tag1}</span>
 
-                <span>{meal.tag2}</span>
+                  <span>{meal.tag2}</span>
 
-              </div>
+                </div>
 
-              <h3>{meal.title}</h3>
+                <h3>{meal.title}</h3>
 
-              <p>{meal.description}</p>
+                <p>{meal.description}</p>
 
-              <div className="meal-footer">
+                <div className="meal-footer">
 
-                <span className="price">
-                  {meal.price}
-                  <small>/meal</small>
-                </span>
+                  <span className="price">
+                    SAR {displayPrice.toFixed(2)}
+                    <small>{planType === "monthly" ? "/month" : "/meal"}</small>
+                  </span>
 
-                <button className="select-btn">
-                  Select →
-                </button>
+                  <button className="select-btn" onClick={() => navigate("/weekly-selection")}>
+                    Select →
+                  </button>
+
+                </div>
 
               </div>
 
             </div>
-
-          </div>
-
-        ))}
+          );
+        })}
 
       </div>
 

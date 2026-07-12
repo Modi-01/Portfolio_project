@@ -1,17 +1,44 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
+import RestaurantRegister from "./pages/RestaurantRegister/RestaurantRegister";
+import RestaurantLogin from "./pages/RestaurantLogin/RestaurantLogin";
+import AdminPendingRestaurants from "./pages/AdminPendingRestaurants/AdminPendingRestaurants";
+import WeeklyMealSelection from "./pages/WeeklyMealSelection/WeeklyMealSelection";
+import OrderSummary from "./pages/OrderSummary/OrderSummary";
+import MyMeals from "./pages/MyMeals/MyMeals";
+import AddMeal from "./pages/AddMeal/AddMeal";
+import EditMeal from "./pages/EditMeal/EditMeal";
+import CustomerDashboard from "./pages/CustomerDashboard/CustomerDashboard";
+import Restaurants from "./pages/Restaurants/Restaurants";
+import MealBrowse from "./pages/MealBrowse/MealBrowse";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/restaurant-register" element={<RestaurantRegister />} />
+          <Route path="/restaurant-login" element={<RestaurantLogin />} />
+          <Route path="/admin/pending-restaurants" element={<AdminPendingRestaurants />} />
+          <Route path="/weekly-selection" element={<WeeklyMealSelection />} />
+          <Route path="/order-summary" element={<OrderSummary />} />
+          <Route path="/restaurant/meals" element={<MyMeals />} />
+          <Route path="/restaurant/meals/new" element={<AddMeal />} />
+          <Route path="/restaurant/meals/:mealId/edit" element={<EditMeal />} />
+          <Route path="/dashboard" element={<CustomerDashboard />} />
+          <Route path="/restaurants" element={<Restaurants />} />
+          <Route path="/restaurants/:restaurantId/meals" element={<MealBrowse />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

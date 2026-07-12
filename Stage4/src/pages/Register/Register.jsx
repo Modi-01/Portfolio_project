@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../../services/auth";
 
 function Register() {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    phone: "",
     age: "",
     gender: "",
     height: "",
@@ -19,9 +24,38 @@ function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Register:", formData);
+    setError("");
+    setIsSubmitting(true);
+
+    const address = [
+      formData.homeAddress && `Home: ${formData.homeAddress}`,
+      formData.workAddress && `Work: ${formData.workAddress}`,
+    ]
+      .filter(Boolean)
+      .join(" | ");
+
+    try {
+      await registerUser({
+        user_type: "client",
+        full_name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        age: Number(formData.age),
+        gender: formData.gender,
+        height_cm: Number(formData.height),
+        weight_kg: Number(formData.weight),
+        health_goal: formData.healthGoal,
+        address,
+      });
+      navigate("/login");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -73,6 +107,8 @@ function Register() {
         .qp-submit { width: 100%; background: #325f3f; color: #fff; height: 56px; border-radius: 9999px; border: none; font-family: 'Hanken Grotesk', sans-serif; font-size: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 8px 24px rgba(50,95,63,0.2); transition: background 0.2s, transform 0.1s; margin-top: 16px; }
         .qp-submit:hover { background: #4a7856; }
         .qp-submit:active { transform: scale(0.98); }
+        .qp-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+        .qp-error { font-size: 14px; color: #b3261e; margin-top: -8px; }
         .qp-footer-link { text-align: center; font-size: 14px; font-weight: 600; color: #5e5e5b; margin-top: 24px; }
         .qp-footer-link a { color: #325f3f; font-weight: 700; text-decoration: none; }
         .qp-footer-link a:hover { text-decoration: underline; }
@@ -161,6 +197,19 @@ function Register() {
                     name="email"
                     placeholder="name@example.com"
                     value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="qp-field">
+                  <label className="qp-label">Phone Number</label>
+                  <input
+                    className="qp-input"
+                    type="tel"
+                    name="phone"
+                    placeholder="+966 5xxxxxxxx"
+                    value={formData.phone}
                     onChange={handleChange}
                     required
                   />
@@ -276,8 +325,10 @@ function Register() {
                   />
                 </div>
 
-                <button className="qp-submit" type="submit">
-                  Create Account
+                {error && <p className="qp-error">{error}</p>}
+
+                <button className="qp-submit" type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Creating Account..." : "Create Account"}
                   <span className="material-symbols-outlined">arrow_forward</span>
                 </button>
               </form>
@@ -299,7 +350,7 @@ function Register() {
               <a href="#">Terms of Service</a>
               <a href="#">Contact Us</a>
             </div>
-            <p className="qp-copyright">© 2024 Quiet Premium. All rights reserved.</p>
+            <p className="qp-copyright">© 2026 Qooti. Effortless Health.</p>
           </div>
         </footer>
       </div>

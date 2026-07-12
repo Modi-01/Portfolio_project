@@ -136,7 +136,7 @@ function WeeklyMealSelection() {
                     <span>{activeMeal.fat}g fat</span>
                   </div>
                   <div className="wms-meal-footer">
-                    <span className="wms-price">${activeMeal.price.toFixed(2)}</span>
+                    <span className="wms-price">SAR {activeMeal.price.toFixed(2)}</span>
                     <button className="wms-change-btn" onClick={() => handleRemove(activeDay)}>
                       Change
                     </button>
@@ -189,7 +189,7 @@ function WeeklyMealSelection() {
 
             <div className="wms-total-row">
               <span>Estimated Total</span>
-              <span>${estimatedTotal.toFixed(2)}</span>
+              <span>SAR {estimatedTotal.toFixed(2)}</span>
             </div>
 
             <button className="wms-review-btn" disabled={!allSelected} onClick={handleReviewOrder}>

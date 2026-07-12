@@ -82,6 +82,81 @@ def get_user_subscriptions(
             conn.close()
 
 
+@router.get("/{subscription_id}/schedule")
+def get_subscription_schedule(
+    subscription_id: int,
+    current_user: dict = Depends(get_current_user)
+):
+    conn = None
+    cursor = None
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            SELECT subscription_id, user_id
+            FROM subscription
+            WHERE subscription_id = %s;
+            """,
+            (subscription_id,)
+        )
+
+        subscription = cursor.fetchone()
+
+        if not subscription:
+            raise HTTPException(status_code=404, detail="Subscription not found.")
+
+        if current_user["user_type"] == "client" and subscription["user_id"] != current_user["user_id"]:
+            raise HTTPException(
+                status_code=403,
+                detail="You can only view your own subscription schedule."
+            )
+
+        cursor.execute(
+            """
+            SELECT
+                oi.order_item_id,
+                oi.day_date,
+                oi.day_of_week,
+                oi.status,
+                m.meal_id,
+                m.name,
+                m.description,
+                m.calories,
+                m.protein_g,
+                m.carbs_g,
+                m.fats_g,
+                m.image_url
+            FROM order_item oi
+            JOIN meal m ON m.meal_id = oi.meal_id
+            WHERE oi.subscription_id = %s
+            ORDER BY oi.day_date;
+            """,
+            (subscription_id,)
+        )
+
+        schedule = cursor.fetchall()
+
+        return {
+            "subscription_id": subscription_id,
+            "schedule": schedule
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+
 @router.post("", response_model=SubscriptionCreateResponse)
 def create_subscription(
     request: SubscriptionCreateRequest,

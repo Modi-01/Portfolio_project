@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import "./Hero.css";
 import heroImage from "../../assets/hero.png";
 
 function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section className="hero">
 
@@ -23,11 +26,11 @@ function Hero() {
         </p>
 
         <div className="hero-buttons">
-          <button className="primary-btn">
+          <button className="primary-btn" onClick={() => navigate("/weekly-selection")}>
             Subscribe Now
           </button>
 
-          <button className="secondary-btn">
+          <button className="secondary-btn" onClick={() => navigate("/restaurants")}>
             Explore Menu
           </button>
         </div>

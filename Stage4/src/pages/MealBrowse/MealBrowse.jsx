@@ -19,8 +19,8 @@ function MealBrowse() {
     // Fetch meals
     fetch(`http://127.0.0.1:8000/api/restaurants/${restaurantId}/meals`)
       .then((res) => res.json())
-      .then((data) => {
-        setMeals(data);
+        .then((data) => {
+        setMeals(data.meals);
         setLoading(false);
       })
       .catch(() => setLoading(false));

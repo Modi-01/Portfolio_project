@@ -1,11 +1,3 @@
--- Seed data generated from the uploaded CSV files
--- Target database: healthy_meals_db
--- Execute after schema0.1.sql
-
-BEGIN;
-
--- app_user data omitted: existing records are preserved
-
 -- 2) restaurant
 INSERT INTO restaurant (
     restaurant_id,

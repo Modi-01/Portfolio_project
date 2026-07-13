@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../../services/auth";
+import { loginUser, roleHome } from "../../services/auth";
 import { useAuth } from "../../context/AuthContext";
 
 function Login() {
@@ -26,7 +26,7 @@ function Login() {
     try {
       const data = await loginUser(formData);
       login(data.access_token, data.user);
-      navigate("/");
+      navigate(roleHome(data.user.user_type));
     } catch (err) {
       setError(err.message);
     } finally {

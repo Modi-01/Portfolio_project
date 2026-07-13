@@ -689,3 +689,4 @@ def get_restaurant_orders(
             cursor.close()
         if conn:
             conn.close()
+

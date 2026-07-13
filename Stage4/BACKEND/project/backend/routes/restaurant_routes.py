@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from database import get_db_connection
+from auth import get_current_user
 from schemas import (
     PublicRestaurantListResponse,
     PublicRestaurantDetailResponse
@@ -31,6 +32,64 @@ def list_approved_restaurants():
         )
 
         return cursor.fetchall()
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+
+# Restaurant profile of the currently logged-in restaurant user.
+# IMPORTANT: declared BEFORE "/{restaurant_id}" so the literal "me" is not
+# captured by the integer path param (that mismatch previously returned 422).
+@router.get("/me")
+def get_current_restaurant(current_user: dict = Depends(get_current_user)):
+    conn = None
+    cursor = None
+
+    try:
+        if current_user["user_type"] != "restaurant":
+            raise HTTPException(
+                status_code=403,
+                detail="Only restaurant users can access restaurant profile information."
+            )
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            SELECT
+                restaurant_id,
+                user_id,
+                restaurant_name,
+                description,
+                logo_url,
+                is_verified,
+                rejection_reason,
+                created_at
+            FROM restaurant
+            WHERE user_id = %s;
+            """,
+            (current_user["user_id"],)
+        )
+
+        restaurant = cursor.fetchone()
+
+        if not restaurant:
+            raise HTTPException(
+                status_code=404,
+                detail="No restaurant profile is linked to this user."
+            )
+
+        return {"restaurant": restaurant}
+
+    except HTTPException:
+        raise
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

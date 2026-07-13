@@ -34,6 +34,9 @@ class RegisterRequest(BaseModel):
     weight_kg: Optional[float] = None
     health_goal: Optional[HealthGoal] = None
     address: Optional[str] = None
+        # Restaurant profile (required when user_type == "restaurant")
+    restaurant_name: Optional[str] = None
+    description: Optional[str] = None
 
 
 class LoginRequest(BaseModel):

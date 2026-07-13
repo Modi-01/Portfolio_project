@@ -51,6 +51,14 @@ def register_user(user: RegisterRequest):
                     detail="Restaurant and admin users cannot provide health profile or address fields."
                 )
 
+        # A restaurant registration must include the restaurant name (used to
+        # create the linked restaurant profile below).
+        if user.user_type == "restaurant" and not user.restaurant_name:
+            raise HTTPException(
+                status_code=400,
+                detail="Restaurant must provide restaurant_name."
+            )
+
         conn = get_db_connection()
         cursor = conn.cursor()
 
@@ -106,6 +114,19 @@ def register_user(user: RegisterRequest):
         )
 
         new_user = cursor.fetchone()
+
+        # Restaurant users get a linked restaurant profile row, created in the
+        # same transaction. It starts unverified (is_verified = FALSE) so it
+        # enters the admin approval queue.
+        if user.user_type == "restaurant":
+            cursor.execute(
+                """
+                INSERT INTO restaurant (user_id, restaurant_name, description, is_verified)
+                VALUES (%s, %s, %s, FALSE);
+                """,
+                (new_user["user_id"], user.restaurant_name, user.description)
+            )
+
         conn.commit()
 
         return {

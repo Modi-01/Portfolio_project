@@ -34,7 +34,6 @@ function Footer() {
 
           <a href="#">About</a>
           <a href="#faq">FAQ</a>
-          <a href="#">Contact</a>
         </div>
 
         <div className="footer-column">
@@ -42,7 +41,7 @@ function Footer() {
 
           <div className="social-icons">
 
-            <a href="#">
+            <a href="https://www.instagram.com/qooti.sa" target="_blank" rel="noopener noreferrer">
               <FaInstagram size={18} />
             </a>
 

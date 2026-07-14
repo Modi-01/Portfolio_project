@@ -1,8 +1,10 @@
 import json
 import os
+from urllib.parse import urlencode
 
 import requests
 from fastapi import APIRouter, HTTPException, Header, Depends
+from fastapi.responses import RedirectResponse
 from database import get_db_connection
 from schemas import PaymentProcessRequest, PaymentProcessResponse
 from auth import verify_token
@@ -13,6 +15,13 @@ router = APIRouter(
 )
 
 MOYASAR_API_BASE_URL = "https://api.moyasar.com/v1"
+
+
+def _result_redirect(**params) -> RedirectResponse:
+    """Send the customer's browser to the frontend payment-result page."""
+    frontend = os.getenv("FRONTEND_BASE_URL", "http://localhost:5173")
+    query = urlencode({k: v for k, v in params.items() if v is not None})
+    return RedirectResponse(f"{frontend}/payment-result?{query}")
 
 
 def verify_user(authorization: str = Header(None)) -> dict:
@@ -234,11 +243,17 @@ def payment_callback(id: str = None, status: str = None, message: str = None):
 
     The query params are informational only — the real status is fetched
     from Moyasar server-to-server before touching the database.
+
+    This endpoint serves the customer's BROWSER, so every outcome redirects
+    to the frontend /payment-result page instead of returning JSON.
     """
     if not id:
-        raise HTTPException(status_code=400, detail="Missing payment id")
+        return _result_redirect(status="error", message="Missing payment id")
 
-    moyasar_payment = moyasar_fetch_payment(id)
+    try:
+        moyasar_payment = moyasar_fetch_payment(id)
+    except HTTPException as e:
+        return _result_redirect(status="error", message=str(e.detail))
     real_status = moyasar_payment.get("status")
 
     conn = None
@@ -259,10 +274,10 @@ def payment_callback(id: str = None, status: str = None, message: str = None):
         payment = cursor.fetchone()
 
         if not payment:
-            raise HTTPException(status_code=404, detail="No payment matches this transaction")
+            return _result_redirect(status="error", message="No payment matches this transaction")
 
         if payment["payment_status"] == "success":
-            return {"message": "Payment already confirmed.", "payment_status": "success"}
+            return _result_redirect(status="success", subscription_id=payment["subscription_id"])
 
         if real_status == "paid":
             # Transaction: payment success + subscription confirmation together
@@ -284,12 +299,10 @@ def payment_callback(id: str = None, status: str = None, message: str = None):
             )
             conn.commit()
 
-            return {
-                "message": "Payment successful. Subscription confirmed.",
-                "payment_status": "success",
-                "subscription_id": payment["subscription_id"],
-                "transaction_id": id
-            }
+            return _result_redirect(
+                status="success",
+                subscription_id=payment["subscription_id"]
+            )
 
         if real_status == "failed":
             failure_message = (moyasar_payment.get("source") or {}).get("message") or "Card declined"
@@ -303,27 +316,22 @@ def payment_callback(id: str = None, status: str = None, message: str = None):
             )
             conn.commit()
 
-            return {
-                "message": f"Payment failed: {failure_message}",
-                "payment_status": "failed",
-                "subscription_id": payment["subscription_id"]
-            }
+            return _result_redirect(
+                status="failed",
+                subscription_id=payment["subscription_id"],
+                message=failure_message
+            )
 
         # Still 'initiated' or 'authorized' — 3D Secure not finished yet
-        return {
-            "message": f"Payment not completed yet (gateway status: {real_status}).",
-            "payment_status": payment["payment_status"]
-        }
-
-    except HTTPException:
-        if conn:
-            conn.rollback()
-        raise
+        return _result_redirect(
+            status="pending",
+            subscription_id=payment["subscription_id"]
+        )
 
     except Exception as e:
         if conn:
             conn.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        return _result_redirect(status="error", message=str(e))
 
     finally:
         if cursor:

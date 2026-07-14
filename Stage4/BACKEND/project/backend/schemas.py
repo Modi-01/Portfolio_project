@@ -167,6 +167,17 @@ class AdminOverviewResponse(BaseModel):
 
 # Subscription & Payment Schemas
 
+
+class DiscountValidateRequest(BaseModel):
+    code: str
+
+
+class DiscountValidateResponse(BaseModel):
+    discount_code_id: int
+    code: str
+    discount_percentage: Decimal
+
+
 class SubscriptionCreateRequest(BaseModel):
     start_date: date
     end_date: date

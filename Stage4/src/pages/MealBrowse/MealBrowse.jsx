@@ -160,12 +160,11 @@ function MealBrowse() {
                       <h3 style={{ fontFamily: "Hanken Grotesk", fontSize: "22px", fontWeight: 700, color: "#1a1c19", marginBottom: "8px" }}>{meal.name}</h3>
                       <p style={{ fontSize: "14px", color: "#5e5e5b", marginBottom: "24px", lineHeight: 1.6 }}>{meal.description || meal.ingredients}</p>
                       <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", color: "#414941" }}>
+                        <div style={{ display: "flex", alignItems: "center", color: "#414941" }}>
                           <span style={{ fontSize: "14px", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px" }}>
                             <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>restaurant</span>
                             {meal.calories} kcal
                           </span>
-                          <span style={{ fontSize: "14px", fontWeight: 700, color: "#325f3f" }}>SAR {meal.price}</span>
                         </div>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", color: "#414941" }}>
                           <span style={{ fontSize: "14px", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px" }}>

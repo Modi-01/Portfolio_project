@@ -5,6 +5,7 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import RestaurantRegister from "./pages/RestaurantRegister/RestaurantRegister";
 import RestaurantLogin from "./pages/RestaurantLogin/RestaurantLogin";
+import AdminLogin from "./pages/AdminLogin/AdminLogin";
 import AdminPendingRestaurants from "./pages/AdminPendingRestaurants/AdminPendingRestaurants";
 import WeeklyMealSelection from "./pages/WeeklyMealSelection/WeeklyMealSelection";
 import OrderSummary from "./pages/OrderSummary/OrderSummary";
@@ -28,6 +29,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/restaurant-register" element={<RestaurantRegister />} />
           <Route path="/restaurant-login" element={<RestaurantLogin />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/pending-restaurants" element={<AdminPendingRestaurants />} />
           <Route path="/weekly-selection" element={<WeeklyMealSelection />} />
           <Route path="/order-summary" element={<OrderSummary />} />

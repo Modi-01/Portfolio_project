@@ -25,6 +25,7 @@ app.include_router(restaurant_router)
 app.include_router(meal_router)
 app.include_router(subscription_router)
 app.include_router(payment_router)
+app.include_router(discount_router)
 
 
 @app.get("/")

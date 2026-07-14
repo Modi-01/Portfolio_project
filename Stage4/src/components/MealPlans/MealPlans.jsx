@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MealPlans.css";
 
@@ -8,7 +7,6 @@ import meal3 from "../../assets/Plan 3.png";
 
 function MealPlans() {
   const navigate = useNavigate();
-  const [planType, setPlanType] = useState("weekly");
 
   const meals = [
     {
@@ -59,19 +57,7 @@ function MealPlans() {
 
         <div className="meal-toggle">
 
-          <button
-            className={planType === "weekly" ? "active" : ""}
-            onClick={() => setPlanType("weekly")}
-          >
-            Weekly
-          </button>
-
-          <button
-            className={planType === "monthly" ? "active" : ""}
-            onClick={() => setPlanType("monthly")}
-          >
-            Monthly
-          </button>
+          <button className="active">Weekly</button>
 
         </div>
 
@@ -80,8 +66,6 @@ function MealPlans() {
       <div className="meal-grid">
 
         {meals.map((meal, index) => {
-          const displayPrice = planType === "monthly" ? meal.price * 4 : meal.price;
-
           return (
             <div className="meal-card" key={index}>
 
@@ -108,8 +92,8 @@ function MealPlans() {
                 <div className="meal-footer">
 
                   <span className="price">
-                    SAR {displayPrice.toFixed(2)}
-                    <small>{planType === "monthly" ? "/month" : "/meal"}</small>
+                    SAR {meal.price.toFixed(2)}
+                    <small>/meal</small>
                   </span>
 
                   <button className="select-btn" onClick={() => navigate("/weekly-selection")}>

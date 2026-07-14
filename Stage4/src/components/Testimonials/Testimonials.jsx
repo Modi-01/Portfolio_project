@@ -18,7 +18,7 @@ function Testimonials() {
         <div className="main-card">
 
           <p className="review">
-            "Quiet Premium didn't just save me 10 hours of
+            "Qooti didn't just save me 10 hours of
             cooking every week—it actually changed how I
             feel. My energy levels are stable throughout
             the day, and I finally have a relationship with

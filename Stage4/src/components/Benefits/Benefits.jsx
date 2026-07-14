@@ -4,7 +4,7 @@ import { FaLeaf, FaSlidersH, FaClock } from "react-icons/fa";
 function Benefits() {
   return (
     <section className="benefits">
-      <h2>Why Choose Quiet Premium</h2>
+      <h2>Why Choose Qooti</h2>
 
       <div className="title-line"></div>
 

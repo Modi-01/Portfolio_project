@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { apiGet } from "../../services/auth";
 
 function MealBrowse() {
   const { restaurantId } = useParams();
@@ -10,20 +11,16 @@ function MealBrowse() {
   const [activeFilter, setActiveFilter] = useState("all");
 
   useEffect(() => {
-    // Fetch restaurant details
-    fetch(`http://127.0.0.1:8000/api/restaurants/${restaurantId}`)
-      .then((res) => res.json())
+    // Restaurant details
+    apiGet(`/api/restaurants/${restaurantId}`)
       .then((data) => setRestaurant(data))
       .catch(() => {});
 
-    // Fetch meals
-    fetch(`http://127.0.0.1:8000/api/restaurants/${restaurantId}/meals`)
-      .then((res) => res.json())
-      .then((data) => {
-        setMeals(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    // Meals — endpoint returns { restaurant_id, meals: [...] }
+    apiGet(`/api/restaurants/${restaurantId}/meals`)
+      .then((data) => setMeals(data.meals ?? []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, [restaurantId]);
 
   const filters = ["all", "Keto", "Vegan", "HighProtein", "LowCarb", "GlutenFree", "Vegetarian"];

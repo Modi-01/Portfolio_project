@@ -7,6 +7,7 @@ from routes.subscription_routes import router as subscription_router
 from routes.admin_routes import router as admin_router
 from routes.restaurant_routes import router as restaurant_router
 from routes.payment_routes import router as payment_router
+from routes.discount_routes import router as discount_router
 
 app = FastAPI()
 

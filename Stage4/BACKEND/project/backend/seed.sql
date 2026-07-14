@@ -5,15 +5,17 @@
 -- ============================================================
 
 -- ============================================================
--- 1 ADMIN USER
--- Email must match the admin domain constraint (chk_admin_email_domain)
+-- 1 ADMIN USER (the only admin — provisioned here, never self-registered)
+-- Email must match the admin domain constraint (chk_admin_email_domain).
+-- DEV login:  admin@qooti_admin.com  /  Admin@Qooti123
+-- (Argon2 hash below. CHANGE THIS PASSWORD before any production use.)
 -- ============================================================
 INSERT INTO app_user (user_type, full_name, email, password_hash, phone)
 VALUES (
     'admin',
     'Qooti Admin',
     'admin@qooti_admin.com',
-    '$2b$10$placeholderhashvalueforadminuser000000000000000000',
+    '$argon2id$v=19$m=65536,t=3,p=4$6n2Pca51TmktxVjLGcMYww$avJScbuB4S7VSCV5bGpYGK2SxN39xborSutvYJ3ileo',
     '+966501234567'
 );
 

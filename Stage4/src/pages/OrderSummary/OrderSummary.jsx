@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { authRequest, isAuthenticated, getCurrentUser } from "../../services/auth";
 
 // Flat weekly plan price (backend ORIGINAL_PRICE on the subscription).
-const PLAN_PRICE = 500.0;
+const PLAN_PRICE = 250.0;
 
 // Delivery windows shown to the user; the value is the TIME the backend stores.
 const TIME_SLOTS = [
@@ -27,6 +27,15 @@ function OrderSummary() {
   const [step, setStep] = useState("");
   const [error, setError] = useState("");
 
+  const [discountInput, setDiscountInput] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState(null);
+  const [discountError, setDiscountError] = useState("");
+  const [isApplying, setIsApplying] = useState(false);
+
+  // Set once the subscription + meal selections are created, so a retry after
+  // a failed payment attempt reuses them instead of creating duplicates.
+  const [createdSub, setCreatedSub] = useState(null);
+
   // Must arrive here from Weekly Selection with a full week chosen.
   if (!state || !state.days || state.days.length === 0) {
     return (
@@ -45,7 +54,32 @@ function OrderSummary() {
     );
   }
 
-  const finalPrice = PLAN_PRICE;
+  const discountAmount = appliedDiscount
+    ? Math.round(PLAN_PRICE * Number(appliedDiscount.discount_percentage)) / 100
+    : 0;
+  const finalPrice = PLAN_PRICE - discountAmount;
+
+  const handleApplyCode = async () => {
+    const code = discountInput.trim();
+    if (!code) return;
+    setDiscountError("");
+    setIsApplying(true);
+    try {
+      const result = await authRequest("/api/discount-codes/validate", "POST", { code });
+      setAppliedDiscount(result);
+    } catch (err) {
+      setAppliedDiscount(null);
+      setDiscountError(err.message);
+    } finally {
+      setIsApplying(false);
+    }
+  };
+
+  const handleRemoveCode = () => {
+    setAppliedDiscount(null);
+    setDiscountInput("");
+    setDiscountError("");
+  };
 
   const handlePay = async (e) => {
     e.preventDefault();
@@ -69,24 +103,32 @@ function OrderSummary() {
 
     setIsPaying(true);
     try {
-      // 1) Create the subscription (also creates the pending payment row).
-      setStep("Creating your subscription…");
-      const sub = await authRequest("/api/subscriptions", "POST", {
-        start_date: state.startDate,
-        end_date: state.endDate,
-        delivery_time: deliveryTime,
-      });
+      let sub = createdSub;
 
-      // 2) Attach the five daily meal selections.
-      setStep("Saving your meal selections…");
-      await authRequest("/api/meal-selections", "POST", {
-        subscription_id: sub.subscription_id,
-        selections: state.days.map((d) => ({
-          meal_id: d.meal_id,
-          day_date: d.iso,
-          day_of_week: d.full,
-        })),
-      });
+      if (!sub) {
+        // 1) Create the subscription (also creates the pending payment row).
+        setStep("Creating your subscription…");
+        const newSub = await authRequest("/api/subscriptions", "POST", {
+          start_date: state.startDate,
+          end_date: state.endDate,
+          delivery_time: deliveryTime,
+          discount_code_id: appliedDiscount?.discount_code_id ?? null,
+        });
+
+        // 2) Attach the five daily meal selections.
+        setStep("Saving your meal selections…");
+        await authRequest("/api/meal-selections", "POST", {
+          subscription_id: newSub.subscription_id,
+          selections: state.days.map((d) => ({
+            meal_id: d.meal_id,
+            day_date: d.iso,
+            day_of_week: d.full,
+          })),
+        });
+
+        setCreatedSub(newSub);
+        sub = newSub;
+      }
 
       // 3) Start the payment; Moyasar returns a 3-D Secure page to complete.
       setStep("Contacting the payment gateway…");
@@ -145,7 +187,15 @@ function OrderSummary() {
         .os-input, .os-select { width: 100%; height: 46px; padding: 0 14px; border-radius: 10px; background: #f4f4ee; border: 2px solid transparent; font-size: 14px; box-sizing: border-box; font-family: inherit; }
         .os-input:focus, .os-select:focus { outline: none; border-color: #325f3f; background: #fff; }
 
+        .os-discount-row { display: flex; gap: 8px; }
+        .os-discount-row .os-input { flex: 1; }
+        .os-apply-btn { background: #1a1c19; color: #fff; border: none; border-radius: 10px; padding: 0 18px; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .os-apply-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .os-discount-error { font-size: 12px; color: #b3261e; margin-top: 4px; }
+        .os-discount-success { font-size: 12px; color: #188038; margin-top: 4px; }
+        .os-remove-code { background: none; border: none; color: #b3261e; font-size: 12px; font-weight: 600; cursor: pointer; padding: 0; margin-left: 8px; }
         .os-sum-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; color: #414941; }
+        .os-sum-row.discount { color: #188038; }
         .os-total-row { display: flex; justify-content: space-between; font-family: 'Hanken Grotesk', sans-serif; font-size: 18px; font-weight: 700; margin-top: 8px; }
         .os-note { font-size: 12px; color: #717971; margin-top: 16px; }
 
@@ -204,6 +254,46 @@ function OrderSummary() {
                 </select>
               </div>
 
+              <div className="os-field">
+                <label className="os-label">Discount Code</label>
+                {appliedDiscount ? (
+                  <p className="os-discount-success">
+                    Code "{appliedDiscount.code}" applied —{" "}
+                    {Number(appliedDiscount.discount_percentage)}% off!
+                    {!createdSub && (
+                      <button type="button" className="os-remove-code" onClick={handleRemoveCode}>
+                        Remove
+                      </button>
+                    )}
+                  </p>
+                ) : createdSub ? (
+                  <p className="os-note" style={{ marginTop: 0 }}>
+                    Order already created — the discount can no longer be changed for this attempt.
+                  </p>
+                ) : (
+                  <>
+                    <div className="os-discount-row">
+                      <input
+                        className="os-input"
+                        type="text"
+                        placeholder="e.g. SAVE10"
+                        value={discountInput}
+                        onChange={(e) => setDiscountInput(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className="os-apply-btn"
+                        onClick={handleApplyCode}
+                        disabled={isApplying || !discountInput.trim()}
+                      >
+                        {isApplying ? "Checking…" : "Apply"}
+                      </button>
+                    </div>
+                    {discountError && <p className="os-discount-error">{discountError}</p>}
+                  </>
+                )}
+              </div>
+
               <div className="os-meals-title">Selected Meals</div>
               {state.days.map((d) => (
                 <div className="os-meal-row" key={d.iso}>
@@ -221,6 +311,12 @@ function OrderSummary() {
                 <span>Weekly Plan (5 meals)</span>
                 <span>SAR {PLAN_PRICE.toFixed(2)}</span>
               </div>
+              {appliedDiscount && (
+                <div className="os-sum-row discount">
+                  <span>Discount ({appliedDiscount.code})</span>
+                  <span>− SAR {discountAmount.toFixed(2)}</span>
+                </div>
+              )}
               <div className="os-sum-row">
                 <span>Delivery Fee</span>
                 <span>FREE</span>

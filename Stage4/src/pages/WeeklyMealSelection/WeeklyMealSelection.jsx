@@ -5,7 +5,7 @@ import { apiGet } from "../../services/auth";
 
 // Flat weekly plan price — pricing lives on the subscription, not on meals
 // (backend ORIGINAL_PRICE). Meals carry nutrition info only.
-const PLAN_PRICE = 500.0;
+const PLAN_PRICE = 250.0;
 
 const toIso = (d) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(

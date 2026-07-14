@@ -233,16 +233,16 @@ def test_discount_pricing(client_a):
     print("\n=== Subscriptions — discount pricing ===")
 
     r = create_sub(client_a, discount_code_id=code_id("SAVE10")).json()
-    check("SUB9", "10% discount: 500.00 → 450.00",
-          Decimal(r["final_price"]) == Decimal("450.00"), f"final={r['final_price']}")
+    check("SUB9", "10% discount: 250.00 → 225.00",
+          Decimal(r["final_price"]) == Decimal("225.00"), f"final={r['final_price']}")
 
     r = create_sub(client_a, discount_code_id=code_id("SAVE25")).json()
-    check("SUB10", "25% discount: 500.00 → 375.00",
-          Decimal(r["final_price"]) == Decimal("375.00"), f"final={r['final_price']}")
+    check("SUB10", "25% discount: 250.00 → 187.50",
+          Decimal(r["final_price"]) == Decimal("187.50"), f"final={r['final_price']}")
 
     r = create_sub(client_a).json()
-    check("SUB11", "no discount: 500.00 → 500.00",
-          Decimal(r["final_price"]) == Decimal("500.00"), f"final={r['final_price']}")
+    check("SUB11", "no discount: 250.00 → 250.00",
+          Decimal(r["final_price"]) == Decimal("250.00"), f"final={r['final_price']}")
 
     # discount_percentage > 100 must be impossible at the schema level
     try:

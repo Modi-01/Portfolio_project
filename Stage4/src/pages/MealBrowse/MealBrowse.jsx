@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { apiGet } from "../../services/auth";
 
 function MealBrowse() {
   const { restaurantId } = useParams();
@@ -10,20 +11,16 @@ function MealBrowse() {
   const [activeFilter, setActiveFilter] = useState("all");
 
   useEffect(() => {
-    // Fetch restaurant details
-    fetch(`http://127.0.0.1:8000/api/restaurants/${restaurantId}`)
-      .then((res) => res.json())
+    // Restaurant details
+    apiGet(`/api/restaurants/${restaurantId}`)
       .then((data) => setRestaurant(data))
       .catch(() => {});
 
-    // Fetch meals
-    fetch(`http://127.0.0.1:8000/api/restaurants/${restaurantId}/meals`)
-      .then((res) => res.json())
-        .then((data) => {
-        setMeals(data.meals);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    // Meals — endpoint returns { restaurant_id, meals: [...] }
+    apiGet(`/api/restaurants/${restaurantId}/meals`)
+      .then((data) => setMeals(data.meals ?? []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, [restaurantId]);
 
   const filters = ["all", "Keto", "Vegan", "HighProtein", "LowCarb", "GlutenFree", "Vegetarian"];
@@ -88,9 +85,17 @@ function MealBrowse() {
               <h1 style={{ fontFamily: "Hanken Grotesk", fontSize: "48px", fontWeight: 700, color: "#1a1c19", marginBottom: "16px", letterSpacing: "-0.02em" }}>
                 {restaurant ? restaurant.restaurant_name : "Fuel Your Potential"}
               </h1>
-              <p style={{ fontSize: "18px", color: "#5e5e5b", maxWidth: "640px", margin: "0 auto 48px" }}>
+              <p style={{ fontSize: "18px", color: "#5e5e5b", maxWidth: "640px", margin: "0 auto 24px" }}>
                 {restaurant ? restaurant.description : "Precision-engineered nutrition tailored to your lifestyle."}
               </p>
+
+              {/* Start the weekly subscription flow from this restaurant */}
+              <button
+                onClick={() => navigate(`/weekly-selection?restaurant=${restaurantId}`)}
+                style={{ background: "#325f3f", color: "#fff", padding: "14px 32px", borderRadius: "9999px", border: "none", fontSize: "15px", fontWeight: 600, cursor: "pointer", marginBottom: "48px" }}
+              >
+                Build Your Weekly Plan →
+              </button>
 
               {/* Filter chips */}
               <div style={{ display: "flex", overflowX: "auto", gap: "8px", justifyContent: "center", marginBottom: "48px", paddingBottom: "8px" }} className="hide-scrollbar">
@@ -170,6 +175,7 @@ function MealBrowse() {
                         </div>
                       </div>
                       <button
+                        onClick={() => navigate(`/weekly-selection?restaurant=${restaurantId}`)}
                         style={{ marginTop: "auto", width: "100%", background: "#325f3f", color: "#fff", padding: "16px", borderRadius: "9999px", border: "none", fontSize: "14px", fontWeight: 600, cursor: "pointer", transition: "background 0.2s" }}
                         onMouseOver={(e) => e.target.style.background = "#4a7856"}
                         onMouseOut={(e) => e.target.style.background = "#325f3f"}

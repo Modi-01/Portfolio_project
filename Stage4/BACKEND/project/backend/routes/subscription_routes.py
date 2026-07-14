@@ -12,7 +12,7 @@ router = APIRouter(
 
 # Team decision (sprint plan Option A): fixed price per subscription until
 # meal prices are added to the schema
-ORIGINAL_PRICE = Decimal("500.00")
+ORIGINAL_PRICE = Decimal("250.00")
 
 
 @router.get("/{user_id}")

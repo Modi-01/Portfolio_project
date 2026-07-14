@@ -48,6 +48,8 @@ function RestaurantRegister() {
         email: formData.email,
         password: formData.password,
         phone: formData.phone,
+        restaurant_name: formData.restaurantName,
+        description: formData.description,
       });
       navigate("/login");
     } catch (err) {

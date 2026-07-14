@@ -34,6 +34,9 @@ class RegisterRequest(BaseModel):
     weight_kg: Optional[float] = None
     health_goal: Optional[HealthGoal] = None
     address: Optional[str] = None
+    # Restaurant profile (required when user_type == "restaurant")
+    restaurant_name: Optional[str] = None
+    description: Optional[str] = None
 
 
 class LoginRequest(BaseModel):
@@ -163,6 +166,17 @@ class AdminOverviewResponse(BaseModel):
 
 
 # Subscription & Payment Schemas
+
+
+class DiscountValidateRequest(BaseModel):
+    code: str
+
+
+class DiscountValidateResponse(BaseModel):
+    discount_code_id: int
+    code: str
+    discount_percentage: Decimal
+
 
 class SubscriptionCreateRequest(BaseModel):
     start_date: date

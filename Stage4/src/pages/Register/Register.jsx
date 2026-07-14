@@ -15,8 +15,7 @@ function Register() {
     height: "",
     weight: "",
     healthGoal: "",
-    homeAddress: "",
-    workAddress: "",
+    address: "",
     password: "",
   });
 
@@ -28,13 +27,6 @@ function Register() {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
-
-    const address = [
-      formData.homeAddress && `Home: ${formData.homeAddress}`,
-      formData.workAddress && `Work: ${formData.workAddress}`,
-    ]
-      .filter(Boolean)
-      .join(" | ");
 
     try {
       await registerUser({
@@ -48,7 +40,7 @@ function Register() {
         height_cm: Number(formData.height),
         weight_kg: Number(formData.weight),
         health_goal: formData.healthGoal,
-        address,
+        address: formData.address,
       });
       navigate("/login");
     } catch (err) {
@@ -302,26 +294,15 @@ function Register() {
                 </div>
 
                 <div className="qp-field">
-                  <label className="qp-label">Home Address</label>
+                  <label className="qp-label">Delivery Address</label>
                   <input
                     className="qp-input"
                     type="text"
-                    name="homeAddress"
+                    name="address"
                     placeholder="123 Main St, Riyadh"
-                    value={formData.homeAddress}
+                    value={formData.address}
                     onChange={handleChange}
-                  />
-                </div>
-
-                <div className="qp-field">
-                  <label className="qp-label">Work Address</label>
-                  <input
-                    className="qp-input"
-                    type="text"
-                    name="workAddress"
-                    placeholder="456 Business Ave, Riyadh"
-                    value={formData.workAddress}
-                    onChange={handleChange}
+                    required
                   />
                 </div>
 

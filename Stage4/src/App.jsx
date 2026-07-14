@@ -8,6 +8,7 @@ import RestaurantLogin from "./pages/RestaurantLogin/RestaurantLogin";
 import AdminPendingRestaurants from "./pages/AdminPendingRestaurants/AdminPendingRestaurants";
 import WeeklyMealSelection from "./pages/WeeklyMealSelection/WeeklyMealSelection";
 import OrderSummary from "./pages/OrderSummary/OrderSummary";
+import PaymentResult from "./pages/PaymentResult/PaymentResult";
 import MyMeals from "./pages/MyMeals/MyMeals";
 import AddMeal from "./pages/AddMeal/AddMeal";
 import EditMeal from "./pages/EditMeal/EditMeal";
@@ -30,6 +31,7 @@ function App() {
           <Route path="/admin/pending-restaurants" element={<AdminPendingRestaurants />} />
           <Route path="/weekly-selection" element={<WeeklyMealSelection />} />
           <Route path="/order-summary" element={<OrderSummary />} />
+          <Route path="/payment-result" element={<PaymentResult />} />
           <Route path="/restaurant/meals" element={<MyMeals />} />
           <Route path="/restaurant/meals/new" element={<AddMeal />} />
           <Route path="/restaurant/meals/:mealId/edit" element={<EditMeal />} />

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { apiGet } from "../../services/auth";
 
 function Restaurants() {
   const [restaurants, setRestaurants] = useState([]);
@@ -7,13 +8,10 @@ function Restaurants() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/restaurants")
-      .then((res) => res.json())
-      .then((data) => {
-        setRestaurants(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    apiGet("/api/restaurants")
+      .then((data) => setRestaurants(data))
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   return (

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { loginUser, roleHome } from "../../services/auth";
 import { useAuth } from "../../context/AuthContext";
 
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -26,7 +27,13 @@ function Login() {
     try {
       const data = await loginUser(formData);
       login(data.access_token, data.user);
-      navigate(roleHome(data.user.user_type));
+
+      const redirectTo = location.state?.redirectTo;
+      if (redirectTo) {
+        navigate(redirectTo, { state: location.state.redirectState });
+      } else {
+        navigate(roleHome(data.user.user_type));
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -156,6 +163,11 @@ function Login() {
               <p className="login-footer-link">
                 Are you a restaurant owner?
                 <Link to="/restaurant-login">Login here</Link>
+              </p>
+
+              <p className="login-footer-link">
+                Are you an administrator?
+                <Link to="/admin/login">Login here</Link>
               </p>
 
               <div className="login-brand-footer">

@@ -116,7 +116,7 @@ function Register() {
         {/* Navbar */}
         <nav className="qp-nav">
           <div className="qp-nav-inner">
-            <div className="qp-logo">Quiet Premium</div>
+            <div className="qp-logo">Qooti</div>
             <div className="qp-nav-links">
               <a href="#">Meal Plans</a>
               <a href="#">Pricing</a>
@@ -144,7 +144,7 @@ function Register() {
                   <span>effortless</span> health.
                 </h1>
                 <p className="qp-subtext" style={{ marginTop: "16px" }}>
-                  Join Quiet Premium today and get personalized nutrition plans
+                  Join Qooti today and get personalized nutrition plans
                   crafted by science and perfected by chefs.
                 </p>
               </div>
@@ -325,7 +325,7 @@ function Register() {
         {/* Footer */}
         <footer>
           <div className="qp-footer">
-            <div className="qp-logo">Quiet Premium</div>
+            <div className="qp-logo">Qooti</div>
             <div className="qp-footer-links">
               <a href="#">Privacy Policy</a>
               <a href="#">Terms of Service</a>

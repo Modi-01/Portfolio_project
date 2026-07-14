@@ -86,7 +86,7 @@ function OrderSummary() {
     setError("");
 
     if (!isAuthenticated()) {
-      navigate("/login");
+      navigate("/login", { state: { redirectTo: "/order-summary", redirectState: state } });
       return;
     }
     const user = getCurrentUser();

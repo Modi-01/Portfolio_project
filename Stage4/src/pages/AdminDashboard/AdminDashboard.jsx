@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { authRequest } from "../../services/auth";
 
 function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -11,15 +12,17 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/admin/overview", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setStats(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    authRequest("/api/admin/overview")
+      .then((data) =>
+        setStats({
+          totalRestaurants: data.total_restaurants,
+          totalCustomers: data.total_customers,
+          totalOrders: data.total_orders,
+          pendingRestaurants: data.pending_restaurants,
+        })
+      )
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   return (

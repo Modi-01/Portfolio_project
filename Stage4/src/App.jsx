@@ -42,6 +42,7 @@ function App() {
           <Route path="/restaurants/:restaurantId/meals" element={<MealBrowse />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/payment" element={<Payment />} />
+        
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -16,6 +16,7 @@ import CustomerDashboard from "./pages/CustomerDashboard/CustomerDashboard";
 import Restaurants from "./pages/Restaurants/Restaurants";
 import MealBrowse from "./pages/MealBrowse/MealBrowse";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import Payment from "./pages/Payment/Payment";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/restaurants" element={<Restaurants />} />
           <Route path="/restaurants/:restaurantId/meals" element={<MealBrowse />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

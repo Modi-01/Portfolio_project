@@ -66,6 +66,73 @@ def get_admin_overview(admin_user: dict = Depends(verify_admin)):
             conn.close()
 
 
+@router.get("/customers")
+def list_customers(admin_user: dict = Depends(verify_admin)):
+    """Get all customers for the admin panel"""
+    conn = None
+    cursor = None
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            SELECT user_id, full_name, email, phone, created_at, is_active
+            FROM app_user
+            WHERE user_type = 'client'
+            ORDER BY created_at DESC;
+            """
+        )
+
+        rows = cursor.fetchall()
+        return {"customers": [dict(row) for row in rows]}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+
+@router.get("/orders")
+def list_orders(admin_user: dict = Depends(verify_admin)):
+    """Get all subscriptions/orders for the admin panel"""
+    conn = None
+    cursor = None
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            SELECT s.subscription_id, s.user_id, u.full_name, u.email,
+                   s.start_date, s.end_date, s.delivery_time,
+                   s.original_price, s.discount_amount, s.final_price,
+                   s.status, s.is_renewed, s.created_at
+            FROM subscription s
+            JOIN app_user u ON u.user_id = s.user_id
+            ORDER BY s.created_at DESC;
+            """
+        )
+
+        rows = cursor.fetchall()
+        return {"orders": [dict(row) for row in rows]}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+
 @router.get("/restaurants", response_model=list[RestaurantDetailResponse])
 def list_all_restaurants(status: str = None, admin_user: dict = Depends(verify_admin)):
     """List all restaurants with their approval status"""

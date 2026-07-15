@@ -136,7 +136,7 @@ function AdminLogin() {
                 <input
                   className="al-input"
                   id="email"
-                  type="email"
+                  type="text"
                   name="email"
                   placeholder="admin@qooti_admin.com"
                   value={formData.email}

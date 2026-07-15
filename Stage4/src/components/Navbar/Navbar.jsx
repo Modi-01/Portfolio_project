@@ -22,7 +22,7 @@ function Navbar() {
       <ul className="nav-links">
   <li><Link to="/">Home</Link></li>
   <li><Link to="/restaurants">Restaurants</Link></li>
-  <li><Link to="/weekly-selection">Meal Plans</Link></li>
+  <li><Link to="/restaurants">Meal Plans</Link></li>
   {user?.user_type === "restaurant" && (
     <li><Link to="/restaurant/meals">My Meals</Link></li>
   )}

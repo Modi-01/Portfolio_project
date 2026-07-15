@@ -19,9 +19,26 @@ function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validate = () => {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      return "Please enter a valid email address.";
+    }
+    if (formData.password.length < 8) {
+      return "Password must be at least 8 characters.";
+    }
+    return "";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -86,6 +103,9 @@ function Login() {
         .login-footer-link { text-align: center; font-size: 16px; color: #414941; margin-top: 24px; }
         .login-footer-link a { color: #325f3f; font-weight: 600; text-decoration: none; margin-left: 4px; }
         .login-footer-link a:hover { text-decoration: underline; }
+        .login-role-row { display: flex; gap: 12px; margin-top: 20px; }
+        .login-role-btn { flex: 1; text-align: center; padding: 12px; border: 2px solid #325f3f; border-radius: 9999px; color: #325f3f; font-size: 14px; font-weight: 600; text-decoration: none; transition: background 0.2s, color 0.2s; }
+        .login-role-btn:hover { background: #325f3f; color: #fff; }
         .login-brand-footer { margin-top: 32px; font-size: 12px; color: #717971; text-align: center; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; font-family: 'Material Symbols Outlined'; font-size: 20px; }
       `}</style>
@@ -160,15 +180,10 @@ function Login() {
                 <Link to="/register">Sign Up</Link>
               </p>
 
-              <p className="login-footer-link">
-                Are you a restaurant owner?
-                <Link to="/restaurant-login">Login here</Link>
-              </p>
-
-              <p className="login-footer-link">
-                Are you an administrator?
-                <Link to="/admin/login">Login here</Link>
-              </p>
+              <div className="login-role-row">
+                <Link to="/restaurant-login" className="login-role-btn">Restaurant Login</Link>
+                <Link to="/admin/login" className="login-role-btn">Admin Login</Link>
+              </div>
 
               <div className="login-brand-footer">
                 <p>© 2026 Qooti. Effortless Health.</p>

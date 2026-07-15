@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiGet } from "../../services/auth";
+import { useAuth } from "../../context/AuthContext";
 
 const SHOWCASE_ICONS = ["eco", "water_drop", "local_dining", "spa"];
 const TAG_LABELS = { HighProtein: "High Protein", LowCarb: "Low Carb", GlutenFree: "Gluten Free" };
 const labelizeTag = (tag) => TAG_LABELS[tag] || tag;
 
 function Restaurants() {
+  const { user, logout } = useAuth();
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mealsByRestaurant, setMealsByRestaurant] = useState({});
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   useEffect(() => {
     apiGet("/api/restaurants")
@@ -115,14 +122,27 @@ function Restaurants() {
           <div className="qp-nav-inner">
             <Link to="/" className="qp-logo">Qooti</Link>
             <div className="qp-nav-links">
-              <Link to="/restaurants">Meal Plans</Link>
-              <Link to="/#meal-plans">Pricing</Link>
-              <a href="#">How it Works</a>
+              {user?.user_type !== "restaurant" && (
+                <>
+                  <Link to="/restaurants">Meal Plans</Link>
+                  <Link to="/#meal-plans">Pricing</Link>
+                  <a href="#">How it Works</a>
+                </>
+              )}
               <Link to="/restaurants" className="active">Partners</Link>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              <Link to="/login"><button className="qp-btn-outline">Log In</button></Link>
-              <Link to="/register"><button className="qp-btn-primary">Sign Up</button></Link>
+              {user ? (
+                <>
+                  <span style={{ fontSize: "14px", fontWeight: 600, color: "#414941" }}>{user.full_name}</span>
+                  <button className="qp-btn-primary" onClick={handleLogout}>Logout</button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login"><button className="qp-btn-outline">Log In</button></Link>
+                  <Link to="/register"><button className="qp-btn-primary">Sign Up</button></Link>
+                </>
+              )}
             </div>
           </div>
         </nav>

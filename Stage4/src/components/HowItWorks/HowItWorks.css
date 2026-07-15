@@ -1,0 +1,83 @@
+.how-it-works {
+    background: #ffffff;
+    padding: 90px 80px;
+    text-align: center;
+}
+
+.how-it-works h2 {
+    font-size: 38px;
+    margin-bottom: 14px;
+    color: #1E1E1E;
+}
+
+.how-it-works .title-line {
+    width: 70px;
+    height: 4px;
+    background: #2E5939;
+    margin: auto;
+    border-radius: 10px;
+    margin-bottom: 60px;
+}
+
+.how-it-works-steps {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: nowrap;
+}
+
+.step {
+    width: 330px;
+    background: #FAFAF4;
+    border-radius: 18px;
+    padding: 35px;
+    text-align: left;
+    box-shadow: 0 10px 25px rgba(0,0,0,.05);
+    transition: .3s;
+    position: relative;
+}
+
+.step:hover {
+    transform: translateY(-8px);
+}
+
+.step-number {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #E1DFDB;
+}
+
+.step .icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.step .icon.green {
+    background: #DDF3DD;
+    color: #2E5939;
+}
+
+.step .icon.gray {
+    background: #F0EFEA;
+    color: #6B6B6B;
+}
+
+.step h3 {
+    margin-bottom: 16px;
+    font-size: 22px;
+    color: #222;
+}
+
+.step p {
+    color: #666;
+    line-height: 1.8;
+    font-size: 15px;
+}

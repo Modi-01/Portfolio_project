@@ -11,6 +11,7 @@ import WeeklyMealSelection from "./pages/WeeklyMealSelection/WeeklyMealSelection
 import OrderSummary from "./pages/OrderSummary/OrderSummary";
 import PaymentResult from "./pages/PaymentResult/PaymentResult";
 import MyMeals from "./pages/MyMeals/MyMeals";
+import RestaurantOrders from "./pages/RestaurantOrders/RestaurantOrders";
 import AddMeal from "./pages/AddMeal/AddMeal";
 import EditMeal from "./pages/EditMeal/EditMeal";
 import CustomerDashboard from "./pages/CustomerDashboard/CustomerDashboard";
@@ -37,6 +38,7 @@ function App() {
           <Route path="/order-summary" element={<OrderSummary />} />
           <Route path="/payment-result" element={<PaymentResult />} />
           <Route path="/restaurant/meals" element={<MyMeals />} />
+          <Route path="/restaurant/orders" element={<RestaurantOrders />} />
           <Route path="/restaurant/meals/new" element={<AddMeal />} />
           <Route path="/restaurant/meals/:mealId/edit" element={<EditMeal />} />
           <Route path="/dashboard" element={<CustomerDashboard />} />

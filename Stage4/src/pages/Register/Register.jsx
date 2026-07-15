@@ -17,15 +17,57 @@ function Register() {
     healthGoal: "",
     address: "",
     password: "",
+    confirmPassword: "",
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validate = () => {
+    if (formData.fullName.trim().length < 2) {
+      return "Please enter your full name.";
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      return "Please enter a valid email address.";
+    }
+    if (!/^0[0-9]{8,14}$/.test(formData.phone.replace(/\s/g, ""))) {
+      return "Phone number must contain digits only and start with 0.";
+    }
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/.test(formData.password)) {
+      return "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character.";
+    }
+    if (formData.password !== formData.confirmPassword) {
+      return "Passwords do not match.";
+    }
+    const age = Number(formData.age);
+    if (!age || age < 13 || age > 100) {
+      return "Age must be between 13 and 100.";
+    }
+    const height = Number(formData.height);
+    if (!height || height < 100 || height > 250) {
+      return "Height must be between 100 and 250 cm.";
+    }
+    const weight = Number(formData.weight);
+    if (!weight || weight < 30 || weight > 300) {
+      return "Weight must be between 30 and 300 kg.";
+    }
+    if (!formData.address.trim()) {
+      return "Please enter a delivery address.";
+    }
+    return "";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -117,15 +159,9 @@ function Register() {
         <nav className="qp-nav">
           <div className="qp-nav-inner">
             <div className="qp-logo">Qooti</div>
-            <div className="qp-nav-links">
-              <a href="#">Meal Plans</a>
-              <a href="#">Pricing</a>
-              <a href="#">How it Works</a>
-              <a href="#">About</a>
-            </div>
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              <button className="qp-btn-outline">Log In</button>
-              <button className="qp-btn-primary">Sign Up</button>
+              <Link to="/login"><button className="qp-btn-outline">Log In</button></Link>
+              <Link to="/register"><button className="qp-btn-primary">Sign Up</button></Link>
             </div>
           </div>
         </nav>
@@ -200,7 +236,7 @@ function Register() {
                     className="qp-input"
                     type="tel"
                     name="phone"
-                    placeholder="+966 5xxxxxxxx"
+                    placeholder="05xxxxxxxx"
                     value={formData.phone}
                     onChange={handleChange}
                     required
@@ -220,12 +256,25 @@ function Register() {
                   />
                 </div>
 
+                <div className="qp-field">
+                  <label className="qp-label">Confirm Password</label>
+                  <input
+                    className="qp-input"
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="••••••••"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
                 <div className="qp-grid2">
                   <div className="qp-field">
                     <label className="qp-label">Age</label>
                     <input
                       className="qp-input"
-                      type="number"
+                      type="text" inputMode="numeric" pattern="[0-9]*"
                       name="age"
                       placeholder="25"
                       value={formData.age}
@@ -254,7 +303,7 @@ function Register() {
                     <label className="qp-label">Height (cm)</label>
                     <input
                       className="qp-input"
-                      type="number"
+                      type="text" inputMode="numeric" pattern="[0-9]*"
                       name="height"
                       placeholder="170"
                       value={formData.height}
@@ -266,7 +315,7 @@ function Register() {
                     <label className="qp-label">Weight (kg)</label>
                     <input
                       className="qp-input"
-                      type="number"
+                      type="text" inputMode="numeric" pattern="[0-9]*"
                       name="weight"
                       placeholder="65"
                       value={formData.weight}

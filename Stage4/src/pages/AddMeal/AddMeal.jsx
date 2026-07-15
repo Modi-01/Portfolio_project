@@ -101,11 +101,11 @@ function AddMeal() {
             <div className="am-field">
               <label className="am-label">Nutrition (per serving)</label>
               <div className="am-row3">
-                <input className="am-input" type="number" name="calories" placeholder="Calories" value={formData.calories} onChange={handleChange} required />
-                <input className="am-input" type="number" name="protein_g" placeholder="Protein (g)" value={formData.protein_g} onChange={handleChange} required />
-                <input className="am-input" type="number" name="carbs_g" placeholder="Carbs (g)" value={formData.carbs_g} onChange={handleChange} required />
+                <input className="am-input" type="text" inputMode="numeric" pattern="[0-9]*" name="calories" placeholder="Calories" value={formData.calories} onChange={handleChange} required />
+                <input className="am-input" type="text" inputMode="numeric" pattern="[0-9]*" name="protein_g" placeholder="Protein (g)" value={formData.protein_g} onChange={handleChange} required />
+                <input className="am-input" type="text" inputMode="numeric" pattern="[0-9]*" name="carbs_g" placeholder="Carbs (g)" value={formData.carbs_g} onChange={handleChange} required />
               </div>
-              <input className="am-input" type="number" name="fats_g" placeholder="Fats (g)" value={formData.fats_g} onChange={handleChange} required style={{ marginTop: "10px" }} />
+              <input className="am-input" type="text" inputMode="numeric" pattern="[0-9]*" name="fats_g" placeholder="Fats (g)" value={formData.fats_g} onChange={handleChange} required style={{ marginTop: "10px" }} />
             </div>
 
             {error && <p className="am-error">{error}</p>}

@@ -21,10 +21,17 @@ function Navbar() {
 
       <ul className="nav-links">
   <li><Link to="/">Home</Link></li>
-  <li><Link to="/restaurants">Restaurants</Link></li>
-  <li><Link to="/restaurants">Meal Plans</Link></li>
+  {user?.user_type !== "restaurant" && (
+    <>
+      <li><Link to="/restaurants">Restaurants</Link></li>
+      <li><Link to="/restaurants">Meal Plans</Link></li>
+    </>
+  )}
   {user?.user_type === "restaurant" && (
-    <li><Link to="/restaurant/meals">My Meals</Link></li>
+    <>
+      <li><Link to="/restaurant/meals">My Meals</Link></li>
+      <li><Link to="/restaurant/orders">Orders</Link></li>
+    </>
   )}
 </ul>
 

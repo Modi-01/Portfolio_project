@@ -45,7 +45,7 @@ export function roleHome(userType) {
     case "admin":
       return "/admin/dashboard";
     default:
-      return "/dashboard";
+      return "/";
   }
 }
 

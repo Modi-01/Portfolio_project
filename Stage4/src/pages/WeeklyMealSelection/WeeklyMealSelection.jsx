@@ -131,6 +131,9 @@ function WeeklyMealSelection() {
         .wms-section-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
         .wms-meal-card { background: #fff; border-radius: 16px; padding: 16px; display: flex; gap: 16px; box-shadow: 0 4px 20px rgba(26,28,25,0.04); margin-bottom: 24px; }
         .wms-meal-img { width: 140px; height: 140px; border-radius: 12px; flex-shrink: 0; background: linear-gradient(135deg, #bcefc5, #325f3f); display: flex; align-items: center; justify-content: center; font-size: 40px; }
+        .wms-meal-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .wms-pick-img { width: 100%; height: 120px; border-radius: 10px; background: linear-gradient(135deg, #bcefc5, #325f3f); overflow: hidden; margin-bottom: 4px; }
+        .wms-pick-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .wms-meal-info { flex: 1; display: flex; flex-direction: column; }
         .wms-tags { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
         .wms-tag { font-size: 11px; font-weight: 600; background: #eaf5ec; color: #325f3f; padding: 3px 10px; border-radius: 9999px; }
@@ -192,7 +195,9 @@ function WeeklyMealSelection() {
 
             {activeMeal ? (
               <div className="wms-meal-card">
-                <div className="wms-meal-img">🍽️</div>
+                <div className="wms-meal-img">
+                  {activeMeal.image_url ? <img src={activeMeal.image_url} alt={activeMeal.name} /> : "🍽️"}
+                </div>
                 <div className="wms-meal-info">
                   <div className="wms-tags">
                     {(activeMeal.tags || []).map((tag) => (
@@ -242,6 +247,9 @@ function WeeklyMealSelection() {
                       key={meal.meal_id}
                       className={`wms-pick-card ${chosen ? "chosen" : ""}`}
                     >
+                      <div className="wms-pick-img">
+                        {meal.image_url ? <img src={meal.image_url} alt={meal.name} /> : null}
+                      </div>
                       <div className="wms-pick-name">{meal.name}</div>
                       <div className="wms-pick-stats">
                         <span>{meal.calories} kcal</span>

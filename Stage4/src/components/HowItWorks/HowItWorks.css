@@ -1,12 +1,12 @@
 .how-it-works {
-    background: #ffffff;
-    padding: 90px 80px;
+    background: #fafaf4;
+    padding: 80px 120px;
     text-align: center;
 }
 
 .how-it-works h2 {
-    font-size: 38px;
-    margin-bottom: 14px;
+    font-size: 36px; letter-spacing: -0.5px;
+    margin-bottom: 48px;
     color: #1E1E1E;
 }
 
@@ -28,7 +28,7 @@
 
 .step {
     width: 330px;
-    background: #FAFAF4;
+    background: #fff;
     border-radius: 18px;
     padding: 35px;
     text-align: left;

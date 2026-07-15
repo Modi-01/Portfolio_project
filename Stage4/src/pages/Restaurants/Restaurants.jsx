@@ -124,9 +124,8 @@ function Restaurants() {
             <div className="qp-nav-links">
               {user?.user_type !== "restaurant" && (
                 <>
-                  <Link to="/restaurants">Meal Plans</Link>
-                  <Link to="/#meal-plans">Pricing</Link>
-                  <a href="#">How it Works</a>
+                  <Link to={user ? "/dashboard" : "/restaurants"}>Meal Plans</Link>
+                  <Link to="/#how-it-works">How it Works</Link>
                 </>
               )}
               <Link to="/restaurants" className="active">Partners</Link>

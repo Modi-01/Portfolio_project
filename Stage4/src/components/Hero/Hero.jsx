@@ -26,7 +26,7 @@ function Hero() {
         </p>
 
         <div className="hero-buttons">
-          <button className="primary-btn" onClick={() => navigate("/weekly-selection")}>
+          <button className="primary-btn" onClick={() => navigate("/restaurants")}>
             Subscribe Now
           </button>
 

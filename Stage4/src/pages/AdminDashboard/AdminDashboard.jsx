@@ -96,7 +96,7 @@ function AdminDashboard() {
               <span className="material-symbols-outlined">dashboard</span>
               Overview
             </a>
-            <a href="/admin/restaurants" className="admin-nav-item">
+            <a href="/admin/pending-restaurants" className="admin-nav-item">
               <span className="material-symbols-outlined">storefront</span>
               Restaurants
               {stats.pendingRestaurants > 0 && (
@@ -157,7 +157,7 @@ function AdminDashboard() {
           {/* Quick Actions */}
           <p className="section-title">Quick Actions</p>
           <div className="quick-actions">
-            <a href="/admin/restaurants" className="action-card">
+            <a href="/admin/pending-restaurants" className="action-card">
               <div className="action-icon">
                 <span className="material-symbols-outlined">how_to_reg</span>
               </div>

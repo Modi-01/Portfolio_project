@@ -2,9 +2,6 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { authRequest } from "../../services/auth";
 
-// TODO: replace with a real "GET /api/restaurants/me" call once the backend adds it.
-const TEMP_RESTAURANT_ID = 1;
-
 function AddMeal() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -31,8 +28,9 @@ function AddMeal() {
     setIsSubmitting(true);
 
     try {
+      const { restaurant } = await authRequest("/api/restaurants/me");
       await authRequest("/api/meals", "POST", {
-        restaurant_id: TEMP_RESTAURANT_ID,
+        restaurant_id: restaurant.restaurant_id,
         name: formData.name,
         description: formData.description,
         ingredients: formData.ingredients,
@@ -57,7 +55,7 @@ function AddMeal() {
         .am-body { background: #fafaf4; min-height: 100vh; padding: 48px 64px; font-family: 'Plus Jakarta Sans', sans-serif; color: #1a1c19; }
         .am-card { max-width: 560px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(26,28,25,0.04); }
         .am-title { font-family: 'Hanken Grotesk', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 20px; }
-        .am-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+        .am-field { display: flex; flex-direction: column; gap: 6px;margin-bottom: 16px; }
         .am-label { font-size: 13px; font-weight: 600; color: #414941; }
         .am-input, .am-textarea { width: 100%; padding: 12px 14px; border-radius: 10px; background: #f4f4ee; border: 2px solid transparent; font-size: 14px; box-sizing: border-box; font-family: inherit; }
         .am-input:focus, .am-textarea:focus { outline: none; border-color: #325f3f; background: #fff; }
@@ -66,7 +64,7 @@ function AddMeal() {
         .am-error { color: #b3261e; font-size: 14px; margin-bottom: 16px; }
         .am-actions { display: flex; gap: 12px; margin-top: 8px; }
         .am-submit-btn { flex: 1; background: #325f3f; color: #fff; border: none; height: 48px; border-radius: 9999px; font-size: 14px; font-weight: 600; cursor: pointer; }
-        .am-submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .am-submit-btn:disabled { opacity: 0.7; cursor: not-allowed;}
         .am-cancel-link { display: flex; align-items: center; justify-content: center; padding: 0 20px; font-size: 14px; font-weight: 600; color: #414941; text-decoration: none; }
       `}</style>
 

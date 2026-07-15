@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { authRequest } from "../../services/auth";
 
-// TODO: replace with a real "GET /api/restaurants/me" call once the backend adds it.
-const TEMP_RESTAURANT_ID = 1;
-
 function MyMeals() {
   const navigate = useNavigate();
   const [meals, setMeals] = useState([]);
@@ -15,7 +12,8 @@ function MyMeals() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"}/api/restaurants/${TEMP_RESTAURANT_ID}/meals`);
+      const { restaurant } = await authRequest("/api/restaurants/me");
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"}/api/restaurants/${restaurant.restaurant_id}/meals`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "Failed to load meals.");
       setMeals(data.meals || []);
@@ -60,7 +58,7 @@ function MyMeals() {
         .mm-edit-btn { background: #f4f4ee; color: #414941; }
         .mm-delete-btn { background: #fdecea; color: #b3261e; }
         .mm-error { color: #b3261e; font-size: 14px; margin-bottom: 16px; }
-        .mm-empty { background: #fff; border: 2px dashed #c1c9bf; border-radius: 16px; padding: 40px; text-align: center; color: #717971; }
+        .mm-empty { background: #fff; border: 2px dashed #c1c9bf; border-radius: 16px; padding: 40px; text-align: center; color: #717971;}
       `}</style>
 
       <div className="mm-body">

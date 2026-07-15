@@ -115,8 +115,8 @@ function Restaurants() {
           <div className="qp-nav-inner">
             <Link to="/" className="qp-logo">Qooti</Link>
             <div className="qp-nav-links">
-              <Link to="/weekly-selection">Meal Plans</Link>
-              <a href="#">Pricing</a>
+              <Link to="/restaurants">Meal Plans</Link>
+              <Link to="/#meal-plans">Pricing</Link>
               <a href="#">How it Works</a>
               <Link to="/restaurants" className="active">Partners</Link>
             </div>

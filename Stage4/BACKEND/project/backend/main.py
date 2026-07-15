@@ -8,6 +8,7 @@ from routes.admin_routes import router as admin_router
 from routes.restaurant_routes import router as restaurant_router
 from routes.payment_routes import router as payment_router
 from routes.discount_routes import router as discount_router
+from routes.user_routes import router as user_router
 
 app = FastAPI()
 
@@ -26,6 +27,7 @@ app.include_router(meal_router)
 app.include_router(subscription_router)
 app.include_router(payment_router)
 app.include_router(discount_router)
+app.include_router(user_router)
 
 
 @app.get("/")

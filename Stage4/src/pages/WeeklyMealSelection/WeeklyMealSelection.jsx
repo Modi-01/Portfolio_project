@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { apiGet } from "../../services/auth";
 
@@ -36,32 +36,35 @@ function buildWeek() {
 
 function WeeklyMealSelection() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const restaurantId = searchParams.get("restaurant");
 
   const days = useMemo(buildWeek, []);
   const [activeDay, setActiveDay] = useState(days[0].key);
   const [meals, setMeals] = useState([]);
-  const [restaurant, setRestaurant] = useState(null);
   const [selections, setSelections] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // A restaurant must be chosen first — send the user to pick one.
   useEffect(() => {
-    if (!restaurantId) navigate("/restaurants");
-  }, [restaurantId, navigate]);
-
-  useEffect(() => {
-    if (!restaurantId) return;
-    apiGet(`/api/restaurants/${restaurantId}`)
-      .then(setRestaurant)
-      .catch(() => {});
-    apiGet(`/api/restaurants/${restaurantId}/meals`)
-      .then((data) => setMeals(data.meals ?? []))
+    apiGet("/api/restaurants")
+      .then(async (restaurants) => {
+        const lists = await Promise.all(
+          (restaurants || []).map((r) =>
+            apiGet(`/api/restaurants/${r.restaurant_id}/meals`)
+              .then((data) =>
+                (data.meals || []).map((m) => ({
+                  ...m,
+                  restaurant_name: r.restaurant_name,
+                }))
+              )
+              .catch(() => [])
+          )
+        );
+        return lists.flat();
+      })
+      .then(setMeals)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [restaurantId]);
+  }, []);
 
   const handleSelect = (meal) => {
     setSelections((prev) => ({ ...prev, [activeDay]: meal }));
@@ -95,8 +98,6 @@ function WeeklyMealSelection() {
     if (!allSelected) return;
     navigate("/order-summary", {
       state: {
-        restaurantId: Number(restaurantId),
-        restaurantName: restaurant?.restaurant_name || "",
         startDate: days[0].iso,
         endDate: days[days.length - 1].iso,
         days: days.map((d) => ({
@@ -105,6 +106,7 @@ function WeeklyMealSelection() {
           meal_id: selections[d.key].meal_id,
           name: selections[d.key].name,
           calories: selections[d.key].calories,
+          restaurant_name: selections[d.key].restaurant_name,
         })),
       },
     });
@@ -130,7 +132,7 @@ function WeeklyMealSelection() {
         .wms-tab-date { font-size: 18px; font-weight: 700; margin-top: 2px; }
         .wms-section-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
         .wms-meal-card { background: #fff; border-radius: 16px; padding: 16px; display: flex; gap: 16px; box-shadow: 0 4px 20px rgba(26,28,25,0.04); margin-bottom: 24px; }
-        .wms-meal-img { width: 140px; height: 140px; border-radius: 12px; flex-shrink: 0; background: linear-gradient(135deg, #bcefc5, #325f3f); display: flex; align-items: center; justify-content: center; font-size: 40px; }
+        .wms-meal-img { width: 140px; height: 140px; border-radius: 12px; flex-shrink: 0; background: linear-gradient(135deg, #bcefc5, #325f3f); display: flex; align-items: center; justify-content: center; font-size: 40px; overflow: hidden; }
         .wms-meal-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .wms-pick-img { width: 100%; height: 120px; border-radius: 10px; background: linear-gradient(135deg, #bcefc5, #325f3f); overflow: hidden; margin-bottom: 4px; }
         .wms-pick-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -147,6 +149,7 @@ function WeeklyMealSelection() {
         .wms-pick-card { background: #fff; border-radius: 14px; padding: 14px; box-shadow: 0 4px 20px rgba(26,28,25,0.04); border: 2px solid transparent; display: flex; flex-direction: column; gap: 6px; }
         .wms-pick-card.chosen { border-color: #325f3f; }
         .wms-pick-name { font-size: 14px; font-weight: 700; }
+        .wms-pick-restaurant { font-size: 11px; color: #717971; margin-top: -4px; }
         .wms-pick-stats { font-size: 12px; color: #414941; display: flex; gap: 10px; }
         .wms-pick-btn { align-self: flex-start; margin-top: 4px; background: #325f3f; color: #fff; border: none; border-radius: 9999px; padding: 6px 16px; font-size: 12px; font-weight: 600; cursor: pointer; }
         .wms-pick-btn.chosen { background: #eaf5ec; color: #325f3f; }
@@ -169,9 +172,7 @@ function WeeklyMealSelection() {
           <div>
             <h1 className="wms-title">Weekly Selection</h1>
             <p className="wms-subtitle">
-              {restaurant
-                ? `Pick one meal per day from ${restaurant.restaurant_name} for next week (Sunday to Thursday).`
-                : "Pick one meal per day for next week (Sunday to Thursday)."}
+              Pick one meal per day for next week (Sunday to Thursday) — mix and match from any of our partner restaurants.
             </p>
 
             {error && <div className="wms-error">{error}</div>}
@@ -206,7 +207,7 @@ function WeeklyMealSelection() {
                   </div>
                   <div className="wms-meal-name">{activeMeal.name}</div>
                   <div className="wms-meal-restaurant">
-                    {restaurant?.restaurant_name}
+                    {activeMeal.restaurant_name}
                   </div>
                   <div className="wms-meal-stats">
                     <span>{activeMeal.calories} kcal</span>
@@ -236,7 +237,7 @@ function WeeklyMealSelection() {
               <div className="wms-empty">Loading meals…</div>
             ) : meals.length === 0 ? (
               <div className="wms-empty">
-                This restaurant has no available meals right now.
+                No meals available right now.
               </div>
             ) : (
               <div className="wms-pick-grid">
@@ -251,6 +252,7 @@ function WeeklyMealSelection() {
                         {meal.image_url ? <img src={meal.image_url} alt={meal.name} /> : null}
                       </div>
                       <div className="wms-pick-name">{meal.name}</div>
+                      <div className="wms-pick-restaurant">{meal.restaurant_name}</div>
                       <div className="wms-pick-stats">
                         <span>{meal.calories} kcal</span>
                         <span>{meal.protein_g}g protein</span>
